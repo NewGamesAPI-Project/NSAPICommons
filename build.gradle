@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'net.cg360.nsapi'
+version '1.0-SNAPSHOT'
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //Remote dependencies.
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //Single jars
+    compile fileTree(dir: 'libs/compile', include: '*.jar')
+    implementation fileTree(dir: 'libs/runtime', include: '*.jar')
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
