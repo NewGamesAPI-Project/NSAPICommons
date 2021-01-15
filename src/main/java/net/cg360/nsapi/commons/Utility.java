@@ -9,6 +9,10 @@ import java.util.regex.Pattern;
 public class Utility {
 
     public static String createNamespacedID(String identifier){
+        return createNamespacedID(CommonConstants.COMMON_PREFIX, identifier);
+    }
+
+    public static String createNamespacedID(String namespace, String identifier){
         if(!identifier.contains(":")){
             return CommonConstants.COMMON_PREFIX + ":" + identifier;
         } else {
