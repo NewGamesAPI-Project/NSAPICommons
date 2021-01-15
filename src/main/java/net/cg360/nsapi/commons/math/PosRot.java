@@ -1,6 +1,8 @@
 package net.cg360.nsapi.commons.math;
 
-import javafx.geometry.Pos;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * A simple position + rotation object.
@@ -24,6 +26,51 @@ public class PosRot {
         this.pitch = pitch;
         this.yaw = yaw;
         this.shouldOffsetCenter = shouldOffsetCenter;
+    }
+
+    public static PosRot parseFromJson(JsonObject root) {
+        double oX = 0, oY = 0, oZ = 0;
+        double oPitch = 0, oYaw = 0;
+        boolean oOffsetCenter = true;
+
+        JsonElement eX = root.get("x");
+        JsonElement eY = root.get("y");
+        JsonElement eZ = root.get("z");
+        JsonElement ePitch = root.get("pitch");
+        JsonElement eYaw = root.get("yaw");
+        JsonElement eOffsetCenter = root.get("offset_center");
+
+        if(eX instanceof JsonPrimitive){
+            JsonPrimitive p = (JsonPrimitive) eX;
+            if(p.isNumber()) oX = p.getAsNumber().doubleValue();
+        }
+
+        if(eY instanceof JsonPrimitive){
+            JsonPrimitive p = (JsonPrimitive) eY;
+            if(p.isNumber()) oY = p.getAsNumber().doubleValue();
+        }
+
+        if(eZ instanceof JsonPrimitive){
+            JsonPrimitive p = (JsonPrimitive) eZ;
+            if(p.isNumber()) oZ = p.getAsNumber().doubleValue();
+        }
+
+        if(ePitch instanceof JsonPrimitive){
+            JsonPrimitive p = (JsonPrimitive) ePitch;
+            if(p.isNumber()) oPitch = p.getAsNumber().doubleValue();
+        }
+
+        if(eYaw instanceof JsonPrimitive){
+            JsonPrimitive p = (JsonPrimitive) eYaw;
+            if(p.isNumber()) oYaw = p.getAsNumber().doubleValue();
+        }
+
+        if(eOffsetCenter instanceof JsonPrimitive){
+            JsonPrimitive p = (JsonPrimitive) eOffsetCenter;
+            if(p.isBoolean()) oOffsetCenter = p.getAsBoolean();
+        }
+
+        return new PosRot(oX, oY, oZ, oPitch, oYaw, oOffsetCenter);
     }
 
     public PosRot add(int pitch, int yaw) { return add(0, 0, 0, pitch, yaw); }
