@@ -3,6 +3,7 @@ package net.cg360.nsapi.commons;
 import java.util.regex.Pattern;
 
 /**
+ * A few utility methods.
  * @author CG360
  */
 public class Utility {

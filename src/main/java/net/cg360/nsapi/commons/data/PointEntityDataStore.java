@@ -2,6 +2,10 @@ package net.cg360.nsapi.commons.data;
 
 import net.cg360.nsapi.commons.math.PosRot;
 
+/**
+ * Store's the core data of a point entity.
+ * @author CG360
+ */
 public class PointEntityDataStore extends PosRot {
 
     protected String identifier;

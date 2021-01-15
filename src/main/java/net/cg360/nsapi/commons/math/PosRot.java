@@ -4,7 +4,6 @@ import javafx.geometry.Pos;
 
 /**
  * A simple position + rotation object.
- *
  * @author CG360
  */
 public class PosRot {
