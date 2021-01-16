@@ -53,7 +53,7 @@ public class PointEntityDataStore {
     public static class AssembledPointEntityDataStore extends PointEntityDataStore {
 
         public AssembledPointEntityDataStore(String identifier, String type, PosRot pos, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
-            super();
+            super(identifier, type, pos, strings, numbers, switches);
         }
 
     }
