@@ -16,6 +16,13 @@ import java.util.Map;
 // the more logical components like isEnabled or other states
 // held within a "Live Region" object. This object can have a
 // reference to the original MapRegionDataStore.
+/**
+ * Stores the data that a functional MapRegion implementation may use.
+ * Examples of implementation can be seen in NGAPI 2 (And NGAPI 1 with an older
+ * format)
+ *
+ * @author CG360
+ */
 public abstract class MapRegionDataStore extends Region {
 
     protected String identifier;
