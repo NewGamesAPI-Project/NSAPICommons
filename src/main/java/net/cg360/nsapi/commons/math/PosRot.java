@@ -17,7 +17,7 @@ public class PosRot {
     protected double pitch;
     protected double yaw;
 
-    protected boolean shouldOffsetCenter;
+    protected boolean shouldOffsetCenter; //TODO: Remove in MapID3 when an editor is available.
 
     public PosRot(double x, double y, double z, double pitch, double yaw, boolean shouldOffsetCenter) {
         this.x = x;
