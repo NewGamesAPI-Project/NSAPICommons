@@ -75,25 +75,24 @@ public abstract class MapRegionDataStore extends Region {
 
         public MapRegionDataStore build() {
             Map<String, String> stringMap = Collections.unmodifiableMap(strings);
-            Map<String, Integer> integerMap = Collections.unmodifiableMap(integers);
-            Map<String, Float> floatMap = Collections.unmodifiableMap(floats);
+            Map<String, Number> numberMap = Collections.unmodifiableMap(numbers);
             Map<String, Boolean> switchMap = Collections.unmodifiableMap(switches);
-            return new AssembledMapRegionDataStore(identifier, type, pointMin, pointMax, stringMap, integerMap, floatMap, switchMap);
+            return new AssembledMapRegionDataStore(identifier, type, pointMin, pointMax, stringMap, numberMap, switchMap);
         }
 
         public Builder setIdentifier(String identifier) { this.identifier = identifier; return this; }
         public Builder setType(String type) { this.type = type; return this; }
 
-        public Builder setPosMin(int x, int y, int z) { return setPosMin(new PosRot(x, y, z, 0, 0, false)); }
-        public Builder setPosMin(PosRot posRot){
-            this.pointMin = posRot;
-            this.orderCorners();
-            return this;
+        public Builder setPositions(int x1, int y1, int z1, int x2, int y2, int z2) {
+            return setPositions(
+                    new PosRot(x1, y1, z1, 0, 0, false),
+                    new PosRot(x2, y2, z2, 0, 0, false)
+            );
         }
 
-        public Builder setPosMax(int x, int y, int z) { return setPosMax(new PosRot(x, y, z, 0, 0, false)); }
-        public Builder setPosMax(PosRot posRot){
-            this.pointMax = posRot;
+        public Builder setPositions(PosRot posRotOne, PosRot posRotTwo){
+            this.pointMin = posRotOne;
+            this.pointMax = posRotTwo;
             this.orderCorners();
             return this;
         }
