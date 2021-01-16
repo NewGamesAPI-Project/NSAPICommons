@@ -27,7 +27,7 @@ public class PointEntityDataStore {
     protected Map<String, Boolean> switches;
 
     public PointEntityDataStore(String identifier, String type, PosRot pos, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
-        this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3) : identifier.trim().toLowerCase();
+        this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3).toLowerCase() : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
         this.pos = pos;
         this.strings = strings;

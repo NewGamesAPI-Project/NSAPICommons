@@ -27,7 +27,7 @@ public abstract class MapRegionDataStore extends Region {
 
     public MapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
         super(one, two);
-        this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3) : identifier.trim().toLowerCase();
+        this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3).toLowerCase() : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
         this.strings = strings;
         this.numbers = numbers;
