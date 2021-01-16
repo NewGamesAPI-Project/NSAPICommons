@@ -111,9 +111,12 @@ public class PosRot {
     }
 
 
-    public double getX() { return x; }
-    public double getY() { return y; }
-    public double getZ() { return z; }
+    public double getX() { return shouldOffsetCenter ? x + 0.5 : x; }
+    public double getY() { return shouldOffsetCenter ? y + 0.5 : y; }
+    public double getZ() { return shouldOffsetCenter ? z + 0.5 : z; }
+    public double getActualX() { return x; }
+    public double getActualY() { return y; }
+    public double getActualZ() { return z; }
     public double getPitch() { return pitch; }
     public double getYaw() { return yaw; }
     public boolean shouldOffsetCenter() { return shouldOffsetCenter; }
