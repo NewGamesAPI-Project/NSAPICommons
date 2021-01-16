@@ -1,6 +1,7 @@
 package net.cg360.nsapi.commons.data;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.cg360.nsapi.commons.Utility;
 import net.cg360.nsapi.commons.math.PosRot;
 import net.cg360.nsapi.commons.math.Region;
@@ -19,17 +20,15 @@ public abstract class MapRegionDataStore extends Region {
     protected String type;
 
     protected Map<String, String> strings;
-    protected Map<String, Integer> integers;
-    protected Map<String, Float> floats;
+    protected Map<String, Number> numbers;
     protected Map<String, Boolean> switches;
 
-    public MapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Integer> integers, Map<String, Float> floats, Map<String, Boolean> switches) {
+    public MapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
         super(one, two);
         this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3) : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
         this.strings = strings;
-        this.integers = integers;
-        this.floats = floats;
+        this.numbers = numbers;
         this.switches = switches;
     }
 
@@ -37,8 +36,7 @@ public abstract class MapRegionDataStore extends Region {
     public String getIdentifier() { return identifier; }
     public String getType() { return type; }
     public Map<String, String> getStrings() { return strings; }
-    public Map<String, Integer> getIntegers() { return integers; }
-    public Map<String, Float> getFloats() { return floats; }
+    public Map<String, Number> getNumbers() { return numbers; }
     public Map<String, Boolean> getSwitches() { return switches; }
 
     public static Builder builder(){ return new Builder(); }
@@ -51,8 +49,8 @@ public abstract class MapRegionDataStore extends Region {
 
     public static class AssembledMapRegionDataStore extends MapRegionDataStore {
 
-        public AssembledMapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Integer> integers, Map<String, Float> floats, Map<String, Boolean> switches) {
-            super(identifier, type, one, two, strings, integers, floats, switches);
+        public AssembledMapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
+            super(identifier, type, one, two, strings, numbers, switches);
         }
 
     }
@@ -66,7 +64,7 @@ public abstract class MapRegionDataStore extends Region {
                     null,null,
                     new PosRot(0, 0, 0, 0, 0, false),
                     new PosRot(0, 0, 0, 0, 0, false),
-                    new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>()
+                    new HashMap<>(), new HashMap<>(), new HashMap<>()
             );
         }
 
@@ -109,20 +107,11 @@ public abstract class MapRegionDataStore extends Region {
             return this;
         }
 
-        public Builder setIntegers(Map<String, Integer> integers) {
-            this.integers = new HashMap<>();
+        public Builder setNumbers(Map<String, Number> floats) {
+            this.numbers = new HashMap<>();
 
-            for(Map.Entry<String, Integer> e: integers.entrySet()){
-                this.integers.put(e.getKey().trim().toLowerCase(), e.getValue());
-            }
-            return this;
-        }
-
-        public Builder setFloats(Map<String, Float> floats) {
-            this.floats = new HashMap<>();
-
-            for(Map.Entry<String, Float> e: floats.entrySet()){
-                this.floats.put(e.getKey().trim().toLowerCase(), e.getValue());
+            for(Map.Entry<String, Number> e: floats.entrySet()){
+                this.numbers.put(e.getKey().trim().toLowerCase(), e.getValue());
             }
             return this;
         }
@@ -141,13 +130,8 @@ public abstract class MapRegionDataStore extends Region {
             return this;
         }
 
-        public Builder setInteger(String entry, Integer value){
-            this.integers.put(entry.trim().toLowerCase(), value);
-            return this;
-        }
-
-        public Builder setFloat(String entry, Float value){
-            this.floats.put(entry.trim().toLowerCase(), value);
+        public Builder setNumber(String entry, Float value){
+            this.numbers.put(entry.trim().toLowerCase(), value);
             return this;
         }
 
