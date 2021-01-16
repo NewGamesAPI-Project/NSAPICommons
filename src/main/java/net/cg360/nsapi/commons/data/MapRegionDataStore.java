@@ -1,8 +1,10 @@
 package net.cg360.nsapi.commons.data;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.cg360.nsapi.commons.Utility;
+import net.cg360.nsapi.commons.exception.MissingPropertyException;
 import net.cg360.nsapi.commons.math.PosRot;
 import net.cg360.nsapi.commons.math.Region;
 
@@ -68,9 +70,46 @@ public abstract class MapRegionDataStore extends Region {
             );
         }
 
-        protected Builder(String id, JsonObject body) {
+        protected Builder(String id, JsonObject root) {
             this();
+            if(root == null) throw new IllegalArgumentException("Missing MapRegion root json in Builder");
+            this.setIdentifier(id);
 
+            JsonElement typeElement = root.get("type"); //Should be string
+            JsonElement oneElement = root.get("1");
+            JsonElement twoElement = root.get("2");
+            JsonElement propertiesElement = root.get("properties");
+
+            if(typeElement instanceof JsonPrimitive){
+                this.setType(((JsonPrimitive) typeElement).getAsString());
+            }
+
+            if(oneElement instanceof JsonObject && twoElement instanceof JsonObject){
+                JsonObject objOne = (JsonObject) oneElement;
+                JsonObject objTwo = (JsonObject) twoElement;
+                PosRot posRotOne = PosRot.parseFromJson(objOne);
+                PosRot posRotTwo = PosRot.parseFromJson(objTwo);
+                this.setPositions(posRotOne, posRotTwo);
+            } else {
+                throw new MissingPropertyException("A MapRegion needs 2 points (names 'one' and 'two')");
+            }
+
+            if(propertiesElement instanceof JsonObject){
+                JsonObject map = (JsonObject) propertiesElement;
+
+                for(Map.Entry<String, JsonElement> e: map.entrySet()){
+                    if(e.getValue() instanceof JsonPrimitive){
+                        JsonPrimitive v = (JsonPrimitive) e.getValue();
+                        if(v.isBoolean()){
+                            this.setSwitch(e.getKey(), v.getAsBoolean());
+                        } else if (v.isNumber()) {
+                            this.setNumber(e.getKey(), v.getAsNumber());
+                        } else {
+                            this.setString(e.getKey(), v.getAsString());
+                        }
+                    }
+                }
+            }
         }
 
         public MapRegionDataStore build() {
@@ -129,7 +168,7 @@ public abstract class MapRegionDataStore extends Region {
             return this;
         }
 
-        public Builder setNumber(String entry, Float value){
+        public Builder setNumber(String entry, Number value){
             this.numbers.put(entry.trim().toLowerCase(), value);
             return this;
         }
