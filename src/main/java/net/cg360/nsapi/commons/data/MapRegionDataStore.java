@@ -1,9 +1,11 @@
 package net.cg360.nsapi.commons.data;
 
+import com.google.gson.JsonObject;
 import net.cg360.nsapi.commons.Utility;
 import net.cg360.nsapi.commons.math.PosRot;
 import net.cg360.nsapi.commons.math.Region;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +42,10 @@ public abstract class MapRegionDataStore extends Region {
     public Map<String, Boolean> getSwitches() { return switches; }
 
     public static Builder builder(){ return new Builder(); }
+    public static Builder builder(String identifier, JsonObject body){ return new Builder(identifier, body); }
+    public static MapRegionDataStore buildFromJson(String identifier, JsonObject body) {
+        return new Builder(identifier, body).build();
+    }
 
 
 
@@ -62,6 +68,19 @@ public abstract class MapRegionDataStore extends Region {
                     new PosRot(0, 0, 0, 0, 0, false),
                     new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>()
             );
+        }
+
+        protected Builder(String id, JsonObject body) {
+            this();
+
+        }
+
+        public MapRegionDataStore build() {
+            Map<String, String> stringMap = Collections.unmodifiableMap(strings);
+            Map<String, Integer> integerMap = Collections.unmodifiableMap(integers);
+            Map<String, Float> floatMap = Collections.unmodifiableMap(floats);
+            Map<String, Boolean> switchMap = Collections.unmodifiableMap(switches);
+            return new AssembledMapRegionDataStore(identifier, type, pointMin, pointMax, stringMap, integerMap, floatMap, switchMap);
         }
 
         public Builder setIdentifier(String identifier) { this.identifier = identifier; return this; }
