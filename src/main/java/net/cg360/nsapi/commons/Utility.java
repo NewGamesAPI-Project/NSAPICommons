@@ -33,4 +33,9 @@ public class Utility {
         return fstr;
     }
 
+    public static String pickRandomString(String[] strings){
+        int index = new Random().nextInt(strings.length);
+        return strings[index];
+    }
+
 }
