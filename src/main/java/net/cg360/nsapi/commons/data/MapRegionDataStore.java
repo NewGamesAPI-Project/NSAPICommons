@@ -56,7 +56,7 @@ public abstract class MapRegionDataStore extends Region {
 
 
 
-    public static class AssembledMapRegionDataStore extends MapRegionDataStore {
+    protected static class AssembledMapRegionDataStore extends MapRegionDataStore {
 
         public AssembledMapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
             super(identifier, type, one, two, strings, numbers, switches);
