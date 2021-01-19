@@ -7,7 +7,11 @@ task copyJars(type: Copy) {
     into "$buildDir/libs"
 }
 
-allprojects {
+jar {
+    jar.enabled(false) // Because I'm too monkeybrain to remove the random NSAPICommons jar (empty too ffs), disable it instead pog.
+}
+
+subprojects {
     apply plugin: 'java'
 
     repositories {
@@ -26,9 +30,6 @@ allprojects {
     jar {
         from {
             configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-        }
-        into {
-            rootDir.getPath() + "/build/libs"
         }
     }
 }
