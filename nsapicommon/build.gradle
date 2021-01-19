@@ -6,5 +6,5 @@ sourceCompatibility = 1.8
 dependencies { }
 
 jar {
-    jar.archiveName('NSAPICommons-Spigot-' + archiveVersion.get() + '.jar')
+    jar.archiveName('NSAPICommons-Universal-' + archiveVersion.get() + '.jar')
 }
