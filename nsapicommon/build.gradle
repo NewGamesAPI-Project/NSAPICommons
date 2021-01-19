@@ -1,0 +1,10 @@
+group 'net.cg360.nsapi'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+dependencies { }
+
+jar {
+    jar.archiveName('NSAPICommons-Spigot-' + archiveVersion.get() + '.jar')
+}

@@ -1,0 +1,12 @@
+group 'net.cg360.nsapi'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+dependencies {
+    compile project(':nsapicommon')
+}
+
+jar {
+    jar.archiveName('NSAPICommons-Universal-' + archiveVersion.get() + '.jar')
+}
