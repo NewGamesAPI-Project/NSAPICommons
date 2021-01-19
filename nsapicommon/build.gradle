@@ -5,6 +5,13 @@ sourceCompatibility = 1.8
 
 dependencies { }
 
-jar {
-    jar.archiveName('NSAPICommons-Universal-' + archiveVersion.get() + '.jar')
+afterEvaluate {
+    jar {
+        jar.archiveName('NSAPICommons-Universal-' + archiveVersion.get() + '.jar')
+    }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
