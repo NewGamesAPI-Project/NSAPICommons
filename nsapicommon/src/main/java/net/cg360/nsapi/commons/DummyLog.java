@@ -3,9 +3,10 @@ package net.cg360.nsapi.commons;
 /** Does nothing **/
 public class DummyLog extends CommonLog {
 
-    @Override public void debug(String message) { }
-    @Override public void info(String message) { }
-    @Override public void warn(String message) { }
-    @Override public void error(String message) { }
+
+    @Override public void debug(String source, String message) { }
+    @Override public void info(String source, String message) { }
+    @Override public void warn(String source, String message) { }
+    @Override public void error(String source, String message) { }
 
 }
