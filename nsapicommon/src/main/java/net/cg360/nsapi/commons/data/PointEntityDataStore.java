@@ -44,9 +44,51 @@ public class PointEntityDataStore {
     public Map<String, Boolean> getSwitches() { return switches; }
 
     public static Builder builder(){ return new Builder(); }
-    public static Builder builder(String identifier, JsonObject body){ return new Builder(identifier, body); }
-    public static PointEntityDataStore buildFromJson(String identifier, JsonObject body) {
-        return new Builder(identifier, body).build();
+
+    public static PointEntityDataStore buildFromJson(String identifier, JsonObject root) {
+        Builder builder = builder();
+
+        if(root == null) throw new IllegalArgumentException("Missing PointEntity root json. This is required to build from json.");
+
+        builder.setIdentifier(identifier);
+        JsonElement typeElement = root.get("type"); //Should be string
+        JsonElement posElement = root.get("pos");
+        JsonElement propertiesElement = root.get("properties");
+
+        if(typeElement instanceof JsonPrimitive){
+            builder.setType(((JsonPrimitive) typeElement).getAsString());
+        }
+
+        if(posElement instanceof JsonObject){
+            JsonObject obj = (JsonObject) posElement;
+            PosRot posRot = PosRot.parseFromJson(obj);
+            builder.setPos(posRot);
+
+        } else {
+            throw new MissingPropertyException("A PointEntity needs a position");
+        }
+
+        if(propertiesElement instanceof JsonObject){
+            JsonObject map = (JsonObject) propertiesElement;
+
+            for(Map.Entry<String, JsonElement> e: map.entrySet()){
+
+                if(e.getValue() instanceof JsonPrimitive){
+                    JsonPrimitive v = (JsonPrimitive) e.getValue();
+
+                    if(v.isBoolean()){
+                        builder.setSwitch(e.getKey(), v.getAsBoolean());
+
+                    } else if (v.isNumber()) {
+                        builder.setNumber(e.getKey(), v.getAsNumber());
+
+                    } else {
+                        builder.setString(e.getKey(), v.getAsString());
+                    }
+                }
+            }
+        }
+        return builder;
     }
 
 
@@ -68,45 +110,6 @@ public class PointEntityDataStore {
                     new PosRot(0, 0, 0, 0, 0, false),
                     new HashMap<>(), new HashMap<>(), new HashMap<>()
             );
-        }
-
-        protected Builder(String id, JsonObject root) {
-            this();
-            if(root == null) throw new IllegalArgumentException("Missing PointEntity root json in Builder");
-            this.setIdentifier(id);
-
-            JsonElement typeElement = root.get("type"); //Should be string
-            JsonElement posElement = root.get("pos");
-            JsonElement propertiesElement = root.get("properties");
-
-            if(typeElement instanceof JsonPrimitive){
-                this.setType(((JsonPrimitive) typeElement).getAsString());
-            }
-
-            if(posElement instanceof JsonObject){
-                JsonObject obj = (JsonObject) posElement;
-                PosRot posRot = PosRot.parseFromJson(obj);
-                this.setPos(posRot);
-            } else {
-                throw new MissingPropertyException("A PointEntity needs a position");
-            }
-
-            if(propertiesElement instanceof JsonObject){
-                JsonObject map = (JsonObject) propertiesElement;
-
-                for(Map.Entry<String, JsonElement> e: map.entrySet()){
-                    if(e.getValue() instanceof JsonPrimitive){
-                        JsonPrimitive v = (JsonPrimitive) e.getValue();
-                        if(v.isBoolean()){
-                            this.setSwitch(e.getKey(), v.getAsBoolean());
-                        } else if (v.isNumber()) {
-                            this.setNumber(e.getKey(), v.getAsNumber());
-                        } else {
-                            this.setString(e.getKey(), v.getAsString());
-                        }
-                    }
-                }
-            }
         }
 
         public PointEntityDataStore build() {

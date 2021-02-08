@@ -52,8 +52,10 @@ public abstract class MapRegionDataStore extends Region {
 
     public static MapRegionDataStore buildFromJson(String identifier, JsonObject root) {
         Builder builder = builder();
-        builder.setIdentifier(identifier);
 
+        if(root == null) throw new IllegalArgumentException("Missing PointEntity root json. This is required to build from json.");
+
+        builder.setIdentifier(identifier);
         JsonElement typeElement = root.get("type"); //Should be string
         JsonElement oneElement = root.get("1");
         JsonElement twoElement = root.get("2");
@@ -69,6 +71,7 @@ public abstract class MapRegionDataStore extends Region {
             PosRot posRotOne = PosRot.parseFromJson(objOne);
             PosRot posRotTwo = PosRot.parseFromJson(objTwo);
             builder.setPositions(posRotOne, posRotTwo);
+
         } else {
             throw new MissingPropertyException("A MapRegion needs 2 points (names 'one' and 'two')");
         }
@@ -77,12 +80,16 @@ public abstract class MapRegionDataStore extends Region {
             JsonObject map = (JsonObject) propertiesElement;
 
             for(Map.Entry<String, JsonElement> e: map.entrySet()){
+
                 if(e.getValue() instanceof JsonPrimitive){
                     JsonPrimitive v = (JsonPrimitive) e.getValue();
+
                     if(v.isBoolean()){
                         builder.setSwitch(e.getKey(), v.getAsBoolean());
+
                     } else if (v.isNumber()) {
                         builder.setNumber(e.getKey(), v.getAsNumber());
+
                     } else {
                         builder.setString(e.getKey(), v.getAsString());
                     }
