@@ -119,10 +119,7 @@ public class PointEntityDataStore {
         }
 
         public PointEntityDataStore build() {
-            Map<String, String> stringMap = Collections.unmodifiableMap(strings);
-            Map<String, Number> numberMap = Collections.unmodifiableMap(numbers);
-            Map<String, Boolean> switchMap = Collections.unmodifiableMap(switches);
-            return new AssembledPointEntityDataStore(identifier, type, pos, stringMap, numberMap, switchMap);
+            return new AssembledPointEntityDataStore(this.identifier, this.type, this.pos, this.strings, this.numbers, this.switches);
         }
 
         public Builder setIdentifier(String identifier) { this.identifier = identifier; return this; }

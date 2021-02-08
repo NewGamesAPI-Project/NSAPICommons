@@ -3,6 +3,7 @@ package net.cg360.nsapi.commons.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.cg360.nsapi.Immutable;
 import net.cg360.nsapi.commons.Utility;
 import net.cg360.nsapi.commons.exception.MissingPropertyException;
 import net.cg360.nsapi.commons.math.PosRot;
@@ -33,12 +34,15 @@ public abstract class MapRegionDataStore extends Region {
     protected Map<String, Boolean> switches;
 
     public MapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
+        this(identifier, true, type, one, two, strings, numbers, switches);
+    }
+    public MapRegionDataStore(String identifier, boolean u, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
         super(one, two);
         this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3).toLowerCase() : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
-        this.strings = strings;
-        this.numbers = numbers;
-        this.switches = switches;
+        this.strings = Immutable.uMap(strings, u);
+        this.numbers = Immutable.uMap(numbers, u);
+        this.switches = Immutable.uMap(switches, u);
     }
 
 
@@ -105,7 +109,7 @@ public abstract class MapRegionDataStore extends Region {
     protected static class AssembledMapRegionDataStore extends MapRegionDataStore {
 
         public AssembledMapRegionDataStore(String identifier, String type, PosRot one, PosRot two, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
-            super(identifier, type, one, two, strings, numbers, switches);
+            super(identifier, true, type, one, two, strings, numbers, switches);
         }
 
     }
@@ -116,7 +120,7 @@ public abstract class MapRegionDataStore extends Region {
 
         protected Builder() {
             super(
-                    null,null,
+                    null, false,null,
                     new PosRot(0, 0, 0, 0, 0, false),
                     new PosRot(0, 0, 0, 0, 0, false),
                     new HashMap<>(), new HashMap<>(), new HashMap<>()
@@ -124,10 +128,7 @@ public abstract class MapRegionDataStore extends Region {
         }
 
         public MapRegionDataStore build() {
-            Map<String, String> stringMap = Collections.unmodifiableMap(strings);
-            Map<String, Number> numberMap = Collections.unmodifiableMap(numbers);
-            Map<String, Boolean> switchMap = Collections.unmodifiableMap(switches);
-            return new AssembledMapRegionDataStore(identifier, type, pointMin, pointMax, stringMap, numberMap, switchMap);
+            return new AssembledMapRegionDataStore(this.identifier, this.type, this.pointMin, this.pointMax, this.strings, this.numbers, this.switches);
         }
 
         public Builder setIdentifier(String identifier) { this.identifier = identifier; return this; }
