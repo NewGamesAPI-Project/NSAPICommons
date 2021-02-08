@@ -3,6 +3,7 @@ package net.cg360.nsapi.commons.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.cg360.nsapi.Immutable;
 import net.cg360.nsapi.commons.Utility;
 import net.cg360.nsapi.commons.exception.MissingPropertyException;
 import net.cg360.nsapi.commons.math.PosRot;
@@ -26,13 +27,18 @@ public class PointEntityDataStore {
     protected Map<String, Number> numbers;
     protected Map<String, Boolean> switches;
 
+
     public PointEntityDataStore(String identifier, String type, PosRot pos, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
+        this(identifier, true, type, pos, strings, numbers, switches);
+    }
+
+    protected PointEntityDataStore(String identifier, boolean u, String type, PosRot pos, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
         this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3).toLowerCase() : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
         this.pos = pos;
-        this.strings = strings;
-        this.numbers = numbers;
-        this.switches = switches;
+        this.strings = Immutable.uMap(strings, u);
+        this.numbers = Immutable.uMap(numbers, u);
+        this.switches = Immutable.uMap(switches, u);
     }
 
 
@@ -95,7 +101,7 @@ public class PointEntityDataStore {
     protected static class AssembledPointEntityDataStore extends PointEntityDataStore {
 
         public AssembledPointEntityDataStore(String identifier, String type, PosRot pos, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
-            super(identifier, type, pos, strings, numbers, switches);
+            super(identifier, true, type, pos, strings, numbers, switches);
         }
 
     }
@@ -106,7 +112,7 @@ public class PointEntityDataStore {
 
         protected Builder() {
             super(
-                    null,null,
+                    null, false,null,
                     new PosRot(0, 0, 0, 0, 0, false),
                     new HashMap<>(), new HashMap<>(), new HashMap<>()
             );
