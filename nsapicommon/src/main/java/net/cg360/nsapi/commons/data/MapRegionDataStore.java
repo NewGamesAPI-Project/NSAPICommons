@@ -49,9 +49,48 @@ public abstract class MapRegionDataStore extends Region {
     public Map<String, Boolean> getSwitches() { return switches; }
 
     public static Builder builder(){ return new Builder(); }
-    public static Builder builder(String identifier, JsonObject body){ return new Builder(identifier, body); }
-    public static MapRegionDataStore buildFromJson(String identifier, JsonObject body) {
-        return new Builder(identifier, body).build();
+
+    public static MapRegionDataStore buildFromJson(String identifier, JsonObject root) {
+        Builder builder = builder();
+        builder.setIdentifier(identifier);
+
+        JsonElement typeElement = root.get("type"); //Should be string
+        JsonElement oneElement = root.get("1");
+        JsonElement twoElement = root.get("2");
+        JsonElement propertiesElement = root.get("properties");
+
+        if(typeElement instanceof JsonPrimitive){
+            builder.setType(((JsonPrimitive) typeElement).getAsString());
+        }
+
+        if(oneElement instanceof JsonObject && twoElement instanceof JsonObject){
+            JsonObject objOne = (JsonObject) oneElement;
+            JsonObject objTwo = (JsonObject) twoElement;
+            PosRot posRotOne = PosRot.parseFromJson(objOne);
+            PosRot posRotTwo = PosRot.parseFromJson(objTwo);
+            builder.setPositions(posRotOne, posRotTwo);
+        } else {
+            throw new MissingPropertyException("A MapRegion needs 2 points (names 'one' and 'two')");
+        }
+
+        if(propertiesElement instanceof JsonObject){
+            JsonObject map = (JsonObject) propertiesElement;
+
+            for(Map.Entry<String, JsonElement> e: map.entrySet()){
+                if(e.getValue() instanceof JsonPrimitive){
+                    JsonPrimitive v = (JsonPrimitive) e.getValue();
+                    if(v.isBoolean()){
+                        builder.setSwitch(e.getKey(), v.getAsBoolean());
+                    } else if (v.isNumber()) {
+                        builder.setNumber(e.getKey(), v.getAsNumber());
+                    } else {
+                        builder.setString(e.getKey(), v.getAsString());
+                    }
+                }
+            }
+        }
+
+        return builder.build();
     }
 
 
@@ -75,48 +114,6 @@ public abstract class MapRegionDataStore extends Region {
                     new PosRot(0, 0, 0, 0, 0, false),
                     new HashMap<>(), new HashMap<>(), new HashMap<>()
             );
-        }
-
-        protected Builder(String id, JsonObject root) {
-            this();
-            if(root == null) throw new IllegalArgumentException("Missing MapRegion root json in Builder");
-            this.setIdentifier(id);
-
-            JsonElement typeElement = root.get("type"); //Should be string
-            JsonElement oneElement = root.get("1");
-            JsonElement twoElement = root.get("2");
-            JsonElement propertiesElement = root.get("properties");
-
-            if(typeElement instanceof JsonPrimitive){
-                this.setType(((JsonPrimitive) typeElement).getAsString());
-            }
-
-            if(oneElement instanceof JsonObject && twoElement instanceof JsonObject){
-                JsonObject objOne = (JsonObject) oneElement;
-                JsonObject objTwo = (JsonObject) twoElement;
-                PosRot posRotOne = PosRot.parseFromJson(objOne);
-                PosRot posRotTwo = PosRot.parseFromJson(objTwo);
-                this.setPositions(posRotOne, posRotTwo);
-            } else {
-                throw new MissingPropertyException("A MapRegion needs 2 points (names 'one' and 'two')");
-            }
-
-            if(propertiesElement instanceof JsonObject){
-                JsonObject map = (JsonObject) propertiesElement;
-
-                for(Map.Entry<String, JsonElement> e: map.entrySet()){
-                    if(e.getValue() instanceof JsonPrimitive){
-                        JsonPrimitive v = (JsonPrimitive) e.getValue();
-                        if(v.isBoolean()){
-                            this.setSwitch(e.getKey(), v.getAsBoolean());
-                        } else if (v.isNumber()) {
-                            this.setNumber(e.getKey(), v.getAsNumber());
-                        } else {
-                            this.setString(e.getKey(), v.getAsString());
-                        }
-                    }
-                }
-            }
         }
 
         public MapRegionDataStore build() {
