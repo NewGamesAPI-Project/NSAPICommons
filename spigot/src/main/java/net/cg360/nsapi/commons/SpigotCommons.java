@@ -8,13 +8,22 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class SpigotCommons extends JavaPlugin {
 
-    public static SpigotCommons plg;
+    public static SpigotCommons commons;
 
     @Override
     public void onEnable() {
-        plg = this;
-        new SpigotLoggerInterface().setAsMain();
+        try {
+            commons = this;
+            new SpigotLoggerInterface().setAsMain();
+
+        } catch (Exception err){
+            commons = null;
+            err.printStackTrace();
+            // Just making sure everything is properly nulled.
+        }
     }
 
-    public static SpigotCommons get() { return plg; }
+    public static SpigotCommons get() { return commons; }
+    public static boolean isCommonsLoaded() { return commons != null; }
+
 }
