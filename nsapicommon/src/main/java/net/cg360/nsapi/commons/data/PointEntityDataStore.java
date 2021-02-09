@@ -35,10 +35,10 @@ public class PointEntityDataStore {
     protected PointEntityDataStore(String identifier, boolean u, String type, PosRot pos, Map<String, String> strings, Map<String, Number> numbers, Map<String, Boolean> switches) {
         this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3).toLowerCase() : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
-        this.pos = pos;
-        this.strings = Immutable.uMap(strings, u);
-        this.numbers = Immutable.uMap(numbers, u);
-        this.switches = Immutable.uMap(switches, u);
+        this.pos = pos == null ? new PosRot(0, 0, 0, 0, 0, false) : pos;
+        this.strings = Immutable.uMap(strings == null ? new HashMap<>() : strings, u);
+        this.numbers = Immutable.uMap(numbers == null ? new HashMap<>() : numbers, u);
+        this.switches = Immutable.uMap(switches == null ? new HashMap<>() : switches, u);
     }
 
 
@@ -114,7 +114,7 @@ public class PointEntityDataStore {
             super(
                     null, false,null,
                     new PosRot(0, 0, 0, 0, 0, false),
-                    new HashMap<>(), new HashMap<>(), new HashMap<>()
+                    null, null, null
             );
         }
 
