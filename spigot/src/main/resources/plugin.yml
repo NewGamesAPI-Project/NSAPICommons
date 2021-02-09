@@ -1,5 +1,5 @@
 name: NSAPICommons
-main: net.cg360.nsapi.commons
+main: net.cg360.nsapi.commons.SpigotCommons
 load: STARTUP
 version: "1.0.0"
 prefix: "nsapicommons"
