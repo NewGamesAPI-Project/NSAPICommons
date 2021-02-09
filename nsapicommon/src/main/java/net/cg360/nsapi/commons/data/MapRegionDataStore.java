@@ -40,9 +40,9 @@ public abstract class MapRegionDataStore extends Region {
         super(one, two);
         this.identifier = identifier == null ? "generated-"+ Utility.generateUniqueToken(5, 3).toLowerCase() : identifier.trim().toLowerCase();
         this.type = type == null ? "static" : type.trim().toLowerCase();
-        this.strings = Immutable.uMap(strings, u);
-        this.numbers = Immutable.uMap(numbers, u);
-        this.switches = Immutable.uMap(switches, u);
+        this.strings = Immutable.uMap(strings == null ? new HashMap<>() : strings, u);
+        this.numbers = Immutable.uMap(numbers == null ? new HashMap<>() : numbers, u);
+        this.switches = Immutable.uMap(switches == null ? new HashMap<>() : switches, u);
     }
 
 
@@ -123,7 +123,7 @@ public abstract class MapRegionDataStore extends Region {
                     null, false,null,
                     new PosRot(0, 0, 0, 0, 0, false),
                     new PosRot(0, 0, 0, 0, 0, false),
-                    new HashMap<>(), new HashMap<>(), new HashMap<>()
+                    null, null, null
             );
         }
 
