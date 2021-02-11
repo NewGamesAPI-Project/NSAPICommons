@@ -134,17 +134,21 @@ public class PointEntityDataStore {
         public Builder setStrings(Map<String, String> strings) {
             this.strings = new HashMap<>();
 
-            for(Map.Entry<String, String> e: strings.entrySet()){
-                this.strings.put(e.getKey().trim().toLowerCase(), e.getValue());
+            if(strings != null) {
+                for (Map.Entry<String, String> e : strings.entrySet()) {
+                    this.strings.put(e.getKey().trim().toLowerCase(), e.getValue());
+                }
             }
             return this;
         }
 
-        public Builder setNumbers(Map<String, Number> floats) {
+        public Builder setNumbers(Map<String, Number> numbers) {
             this.numbers = new HashMap<>();
 
-            for(Map.Entry<String, Number> e: floats.entrySet()){
-                this.numbers.put(e.getKey().trim().toLowerCase(), e.getValue());
+            if(numbers != null) {
+                for (Map.Entry<String, Number> e : numbers.entrySet()) {
+                    this.numbers.put(e.getKey().trim().toLowerCase(), e.getValue());
+                }
             }
             return this;
         }
@@ -152,8 +156,10 @@ public class PointEntityDataStore {
         public Builder setSwitches(Map<String, Boolean> switches) {
             this.switches = new HashMap<>();
 
-            for(Map.Entry<String, Boolean> e: switches.entrySet()){
-                this.switches.put(e.getKey().trim().toLowerCase(), e.getValue());
+            if(switches != null) {
+                for (Map.Entry<String, Boolean> e : switches.entrySet()) {
+                    this.switches.put(e.getKey().trim().toLowerCase(), e.getValue());
+                }
             }
             return this;
         }
