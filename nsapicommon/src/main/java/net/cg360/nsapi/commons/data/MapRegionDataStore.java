@@ -142,8 +142,8 @@ public abstract class MapRegionDataStore extends Region {
         }
 
         public Builder setPositions(PosRot posRotOne, PosRot posRotTwo){
-            this.pointMin = posRotOne;
-            this.pointMax = posRotTwo;
+            this.pointMin = posRotOne == null ? new PosRot(0, 0, 0, 0, 0, false) : posRotOne;
+            this.pointMax = posRotTwo == null ? new PosRot(0, 0, 0, 0, 0, false) : posRotTwo;
             this.orderCorners();
             return this;
         }
@@ -152,6 +152,7 @@ public abstract class MapRegionDataStore extends Region {
             this.strings = new HashMap<>();
 
             if(strings != null) {
+
                 for (Map.Entry<String, String> e : strings.entrySet()) {
                     this.strings.put(e.getKey().trim().toLowerCase(), e.getValue());
                 }
@@ -163,6 +164,7 @@ public abstract class MapRegionDataStore extends Region {
             this.numbers = new HashMap<>();
 
             if(numbers != null) {
+
                 for (Map.Entry<String, Number> e : numbers.entrySet()) {
                     this.numbers.put(e.getKey().trim().toLowerCase(), e.getValue());
                 }
@@ -174,6 +176,7 @@ public abstract class MapRegionDataStore extends Region {
             this.switches = new HashMap<>();
 
             if(switches != null) {
+
                 for (Map.Entry<String, Boolean> e : switches.entrySet()) {
                     this.switches.put(e.getKey().trim().toLowerCase(), e.getValue());
                 }
@@ -182,17 +185,44 @@ public abstract class MapRegionDataStore extends Region {
         }
 
         public Builder setString(String entry, String value){
-            this.strings.put(entry.trim().toLowerCase(), value);
+
+            if(entry != null) {
+
+                if (value == null) {
+                    this.strings.remove(entry.trim().toLowerCase());
+
+                } else {
+                    this.strings.put(entry.trim().toLowerCase(), value);
+                }
+            }
             return this;
         }
 
         public Builder setNumber(String entry, Number value){
-            this.numbers.put(entry.trim().toLowerCase(), value);
+
+            if(entry != null) {
+
+                if (value == null) {
+                    this.numbers.remove(entry.trim().toLowerCase());
+
+                } else {
+                    this.numbers.put(entry.trim().toLowerCase(), value);
+                }
+            }
             return this;
         }
 
         public Builder setSwitch(String entry, Boolean value){
-            this.switches.put(entry.trim().toLowerCase(), value);
+
+            if(entry != null) {
+
+                if (value == null) {
+                    this.switches.remove(entry.trim().toLowerCase());
+
+                } else {
+                    this.switches.put(entry.trim().toLowerCase(), value);
+                }
+            }
             return this;
         }
 
