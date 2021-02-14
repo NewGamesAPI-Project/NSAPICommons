@@ -10,8 +10,8 @@ public final class Check {
         if(isNonNull(obj)) throw new MissingPropertyException(String.format("%s is missing a valid '%s' property.", loc, name));
     }
 
-    public static void nullParam(Object obj, String loc, String name) {
-        if(isNonNull(obj)) throw new IllegalArgumentException(String.format("'%s' in %s cannot be null.", loc, name));
+    public static void nullParam(Object obj, String name) {
+        if(isNonNull(obj)) throw new IllegalArgumentException(String.format("'%s' cannot be null.", name));
     }
 
     /**
