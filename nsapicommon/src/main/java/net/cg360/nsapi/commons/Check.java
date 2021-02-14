@@ -2,6 +2,8 @@ package net.cg360.nsapi.commons;
 
 import net.cg360.nsapi.commons.exception.MissingPropertyException;
 
+import java.util.List;
+
 public final class Check {
 
     public static void missingProperty(Object obj, String loc, String name) {
@@ -10,6 +12,18 @@ public final class Check {
 
     public static void nullParam(Object obj, String loc, String name) {
         if(isNonNull(obj)) throw new IllegalArgumentException(String.format("'%s' in %s cannot be null.", loc, name));
+    }
+
+    /**
+     * Assets that a value is between two numbers.
+     * @param val the value being checked.
+     * @param lowerBound the lower bound checked (inclusive)
+     * @param upperBound the upper bound checked (inclusive)
+     * @param name the name of the variable/property.
+     */
+    public static void inclusiveBounds(int val, int lowerBound, int upperBound, String name) {
+        if((val < lowerBound)) throw new IllegalStateException(String.format("'%s' is out of bounds (val = %s | Lower = %s)", name, val, lowerBound));
+        if((val > upperBound)) throw new IllegalStateException(String.format("'%s' is out of bounds (val = %s | Upper = %s)", name, val, upperBound));
     }
 
     public static boolean isNonNull(Object obj) {
