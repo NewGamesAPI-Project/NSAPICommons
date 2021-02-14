@@ -5,7 +5,7 @@ import net.cg360.nsapi.commons.exception.MissingPropertyException;
 public final class Check {
 
     public static void missingProperty(Object obj, String loc, String name) {
-        if(isNonNull(obj)) throw new MissingPropertyException(String.format("%s is missing a '%s' property.", loc, name));
+        if(isNonNull(obj)) throw new MissingPropertyException(String.format("%s is missing a valid '%s' property.", loc, name));
     }
 
     public static void nullParam(Object obj, String loc, String name) {
