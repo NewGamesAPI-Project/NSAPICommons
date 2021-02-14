@@ -3,13 +3,12 @@ package net.cg360.nsapi.commons.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.cg360.nsapi.Immutable;
+import net.cg360.nsapi.commons.Immutable;
 import net.cg360.nsapi.commons.Utility;
 import net.cg360.nsapi.commons.exception.MissingPropertyException;
 import net.cg360.nsapi.commons.math.PosRot;
 import net.cg360.nsapi.commons.math.Region;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

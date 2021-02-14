@@ -1,4 +1,4 @@
-package net.cg360.nsapi;
+package net.cg360.nsapi.commons;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
