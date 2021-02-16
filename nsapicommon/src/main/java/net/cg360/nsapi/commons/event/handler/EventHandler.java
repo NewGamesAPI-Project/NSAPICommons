@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 public @interface EventHandler {
 
     Priority getPriority() default Priority.NORMAL;
-    boolean ignoreCancelled() default true;
+    boolean ignoreIfCancelled() default true;
 
 }
