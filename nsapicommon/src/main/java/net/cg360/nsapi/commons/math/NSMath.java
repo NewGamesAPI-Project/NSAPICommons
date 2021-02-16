@@ -10,4 +10,12 @@ public class NSMath {
         return (byte) ((byteIn >> position) & 0x01);
     }
 
+    public static byte setBitOne(byte byteIn, byte position) {
+        return (byte) (byteIn | 1 << position);
+    }
+
+    public static byte setBitZero(byte byteIn, byte position) {
+        return (byte) (byteIn & ~(1 << position));
+    }
+
 }
