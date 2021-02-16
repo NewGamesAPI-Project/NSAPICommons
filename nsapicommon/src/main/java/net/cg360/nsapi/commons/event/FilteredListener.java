@@ -21,8 +21,8 @@ public class FilteredListener extends Listener {
     }
 
     @Override
-    public HashMap<Priority, List<HandlerMethodPair>> getEventMethods(Event event) {
-        HashMap<Priority, List<HandlerMethodPair>> methods = super.getEventMethods(event);
+    public ArrayList<HandlerMethodPair> getEventMethods(Event event) {
+        ArrayList<HandlerMethodPair> methods = super.getEventMethods(event);
         // Pass to filters. They can edit the map.
         return methods;
     }

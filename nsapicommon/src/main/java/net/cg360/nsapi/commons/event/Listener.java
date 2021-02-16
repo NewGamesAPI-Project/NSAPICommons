@@ -4,17 +4,20 @@ import net.cg360.nsapi.commons.event.handler.EventHandler;
 import net.cg360.nsapi.commons.event.handler.HandlerMethodPair;
 import net.cg360.nsapi.commons.event.handler.Priority;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 
+// This whole class probably isn't an efficient EventListener
+// implementation. If anyone has any suggestions, create a PR. All
+// that needs to stay intact is the FilteredListener's added filter
+// behaviour
 public class Listener {
 
-    // Event -> Priority -> Method+Annotation list
-    private HashMap<Class<? extends Event>, HashMap<Priority, List<HandlerMethodPair>>> listenerMethods;
+    // Event Class -> Method+Annotation list
+    private HashMap<Class<? extends Event>, ArrayList<HandlerMethodPair>> listenerMethods;
 
     public Listener () {
         this.listenerMethods = new HashMap<>();
@@ -32,11 +35,22 @@ public class Listener {
                     Class<?> type = parameters[0].getType();
                     ArrayList<Class<? extends Event>> eventClasses = new ArrayList<>();
 
-                    checkAndAdd(type, eventClasses);
+                    HandlerMethodPair pair = new HandlerMethodPair(annotation, method);
+
+                    checkAndAdd(type, eventClasses); // Get all the categories this method would be in.
+
+                    for(Class<? extends Event> cls: eventClasses) {
+
+                        if(!listenerMethods.containsKey(cls)){
+                            listenerMethods.put(cls, new ArrayList<>()); // Create new handler list if it doesn't exist.
+                        }
+                        listenerMethods.get(cls).add(pair);
+                    }
                 }
             }
         }
-        // manager.addListener() protected method.
+
+        // manager.addListener() protected method to add listener to manager. Should NOT be public.
     }
 
     @SuppressWarnings("unchecked") // It's checked :)
@@ -53,8 +67,10 @@ public class Listener {
         }
     }
 
-    public HashMap<Priority, List<HandlerMethodPair>> getEventMethods(Event event) {
+    public ArrayList<HandlerMethodPair> getEventMethods(Event event) {
+        ArrayList<HandlerMethodPair> ls = listenerMethods.get(event.getClass());
 
+        return ls == null ? new ArrayList<>() : new ArrayList<>(ls); // Empty list if no methods exist. Otherwise clone.
     }
 
 }
