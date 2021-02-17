@@ -13,7 +13,7 @@ The project is written in a way where the majority of the code is compatible acr
  - **MapRegion Data Type:** 2 corners associated with a type and properties.
  - **PointEntity Data Type:** A position associated with a type and properties.
  - **Platform Independent Log:** A very simple logging interface, translated for each platform.
- - **PosRot + Region:** Two data types that store positions.
- - **Importer: [in dev]** Assign variables inside another class if requested with an @Import
+ - **PosRot, Pos & Region:** Two data types that store positions.
  - **Text Utilities:** Generate a random string, pick a random string out of an array, etc.
  - **Quick Immutability:** A shortened way of making a list, or a map immutable.
+ - **Event System:** A custom event system with support for *filters* on Event Managers and Listeners.
