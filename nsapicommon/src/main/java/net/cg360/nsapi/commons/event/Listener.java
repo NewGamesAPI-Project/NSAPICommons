@@ -14,17 +14,15 @@ import java.util.HashMap;
 // implementation. If anyone has any suggestions, create a PR. All
 // that needs to stay intact is the FilteredListener's added filter
 // behaviour
-public class Listener {
+public abstract class Listener {
 
     // Event Class -> Method+Annotation list
     private HashMap<Class<? extends Event>, ArrayList<HandlerMethodPair>> listenerMethods;
 
     public Listener () {
         this.listenerMethods = new HashMap<>();
-    }
 
-    public final void registerListener(EventManager manager) {
-
+        // Get event listening methods.
         for(Method method : this.getClass().getMethods()) {
 
             if(method.isAnnotationPresent(EventHandler.class)) {
@@ -36,7 +34,6 @@ public class Listener {
                     ArrayList<Class<? extends Event>> eventClasses = new ArrayList<>();
 
                     HandlerMethodPair pair = new HandlerMethodPair(annotation, method);
-
                     checkAndAdd(type, eventClasses); // Get all the categories this method would be in.
 
                     for(Class<? extends Event> cls: eventClasses) {
@@ -49,11 +46,17 @@ public class Listener {
                 }
             }
         }
-
-        // manager.addListener() protected method to add listener to manager. Should NOT be public.
     }
 
-    @SuppressWarnings("unchecked") // It's checked :)
+    public final void registerListener(EventManager manager) {
+
+    }
+
+    public final void unregisterListener(EventManager manager) {
+
+    }
+
+    @SuppressWarnings("unchecked") // It's checked with Class#isAssaignableFrom() :)
     private void checkAndAdd(Class<?> classIn, ArrayList<Class<? extends Event>> list) {
         if(classIn == null) return;
 

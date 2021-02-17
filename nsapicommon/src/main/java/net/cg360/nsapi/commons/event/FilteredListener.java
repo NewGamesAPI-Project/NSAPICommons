@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class FilteredListener extends Listener {
+public abstract class FilteredListener extends Listener {
 
     private List<EventFilter> filters;
 
