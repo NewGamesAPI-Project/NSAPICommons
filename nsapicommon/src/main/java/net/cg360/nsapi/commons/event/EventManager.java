@@ -30,6 +30,40 @@ public class EventManager {
     }
 
 
+    /**
+     * Registers a listener to this EventManager
+     * @param listener the listener to be registered.
+     */
+    public void addListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Removes listener from this EventManager and any child EventManager's
+     * @param listener the listener to be removed.
+     */
+    public void removeListener(Listener listener) {
+        removeListener(listener, true);
+    }
+
+    /**
+     * Removes a listener from the managers listener list.
+     * @param listener the listener to be removed.
+     * @param removeFromChildren should instances of this listener be removed in child EventManager's ?
+     */
+    public void removeListener(Listener listener, boolean removeFromChildren) {
+        listeners.remove(listener);
+
+        if(removeFromChildren) {
+
+            for (EventManager child : children) {
+                child.removeListener(listener, true); // Ensure children don't include it either.
+            }
+        }
+    }
+
+
+
 
     public EventFilter[] getFilters() { return filters.toArray(new EventFilter[0]); }
     public Listener[] getListeners() { return listeners.toArray(new Listener[0]); }

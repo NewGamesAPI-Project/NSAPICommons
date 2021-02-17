@@ -48,14 +48,38 @@ public abstract class Listener {
         }
     }
 
+    /**
+     * Calls EventManager's #addListener() method.
+     * @param manager the manager to add this listener to.
+     */
     public final void registerListener(EventManager manager) {
-
+        manager.addListener(this);
     }
 
+    /**
+     * Calls EventManager's #removeListener() method.
+     * @param manager the manager to remove this listener from.
+     */
     public final void unregisterListener(EventManager manager) {
-
+        unregisterListener(manager, true);
     }
 
+    /**
+     * Calls EventManager's #removeListener() method.
+     * @param manager the manager to remove this listener from.
+     * @param removeFromChildren should child managers have this listener removed?
+     */
+    public final void unregisterListener(EventManager manager, boolean removeFromChildren) {
+        manager.removeListener(this, removeFromChildren);
+    }
+
+    /**
+     * Checks to see if a class extends an event, adding it to a list of
+     * identified classes. It crawls through all the superclasses and interfaces
+     * of a class with recursion.
+     * @param classIn the class to be checked.
+     * @param list a list of all the previously checked classes.
+     */
     @SuppressWarnings("unchecked") // It's checked with Class#isAssaignableFrom() :)
     private void checkAndAdd(Class<?> classIn, ArrayList<Class<? extends Event>> list) {
         if(classIn == null) return;
@@ -70,6 +94,10 @@ public abstract class Listener {
         }
     }
 
+    /**
+     * @param event the event received.
+     * @return all the methods that are triggered by the specified event.
+     */
     public ArrayList<HandlerMethodPair> getEventMethods(Event event) {
         ArrayList<HandlerMethodPair> ls = listenerMethods.get(event.getClass());
 
