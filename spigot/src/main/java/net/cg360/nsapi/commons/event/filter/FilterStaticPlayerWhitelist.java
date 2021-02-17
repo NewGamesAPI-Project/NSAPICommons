@@ -16,11 +16,14 @@ public class FilterStaticPlayerWhitelist implements EventFilter {
     protected Player[] playerWhitelist;
     protected boolean onlyPlayerEvents;
 
+
     public FilterStaticPlayerWhitelist(Player[] playerWhitelist) { this(playerWhitelist, false); }
     public FilterStaticPlayerWhitelist(Player[] playerWhitelist, boolean onlyPlayerEvents) {
         this.playerWhitelist = playerWhitelist;
         this.onlyPlayerEvents = onlyPlayerEvents;
     }
+
+
 
     @Override
     public boolean checkEvent(Event eventIn) {
