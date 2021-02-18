@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 // This whole class probably isn't an efficient EventListener
 // implementation. If anyone has any suggestions, create a PR. All
@@ -107,4 +108,22 @@ public class Listener {
         return ls == null ? new ArrayList<>() : new ArrayList<>(ls); // Empty list if no methods exist. Otherwise clone.
     }
 
+    /**
+     * @return the source object this listener hooks into the event system.
+     */
+    public Object getSourceObject() {
+        return sourceObject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if(o instanceof Listener) {
+            Listener oListener = (Listener) o;
+
+            // Compare the source objects instead.
+            return oListener.getSourceObject().equals( this.getSourceObject() );
+        }
+        return false;
+    }
 }
