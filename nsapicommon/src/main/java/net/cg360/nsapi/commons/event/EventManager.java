@@ -33,9 +33,15 @@ public class EventManager {
     /**
      * Registers a listener to this EventManager
      * @param listener the listener to be registered.
+     * @return listener for storing an instance.
      */
-    public void addListener(Listener listener) {
+    public Listener addListener(Listener listener) {
+        removeListener(listener, true);
+        // Check that it isn't duped by clearing it.
+        // If someone has used the same object instance to create two objects and overrided
+        // #equals(), that's their problem.
         listeners.add(listener);
+        return listener;
     }
 
     /**
