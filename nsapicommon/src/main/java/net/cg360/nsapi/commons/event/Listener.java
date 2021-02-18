@@ -14,16 +14,19 @@ import java.util.HashMap;
 // implementation. If anyone has any suggestions, create a PR. All
 // that needs to stay intact is the FilteredListener's added filter
 // behaviour
-public abstract class Listener {
+//TODO: Rewrite this as an interface maybe? Would me more in-line
+public class Listener {
 
     // Event Class -> Method+Annotation list
     private HashMap<Class<? extends Event>, ArrayList<HandlerMethodPair>> listenerMethods;
+    private Object sourceObject;
 
-    public Listener () {
+    public Listener (Object sourceObject) {
         this.listenerMethods = new HashMap<>();
+        this.sourceObject = sourceObject;
 
         // Get event listening methods.
-        for(Method method : this.getClass().getMethods()) {
+        for(Method method : this.sourceObject.getClass().getMethods()) {
 
             if(method.isAnnotationPresent(EventHandler.class)) {
                 EventHandler annotation = method.getAnnotation(EventHandler.class);
@@ -81,7 +84,7 @@ public abstract class Listener {
      * @param list a list of all the previously checked classes.
      */
     @SuppressWarnings("unchecked") // It's checked with Class#isAssaignableFrom() :)
-    private void checkAndAdd(Class<?> classIn, ArrayList<Class<? extends Event>> list) {
+    private static void checkAndAdd(Class<?> classIn, ArrayList<Class<? extends Event>> list) {
         if(classIn == null) return;
 
         if(classIn.isAssignableFrom(Event.class)){

@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class FilteredListener extends Listener {
+public class FilteredListener extends Listener {
 
     private List<EventFilter> filters;
 
-    public FilteredListener(EventFilter... eventFilters) {
-        super();
+    public FilteredListener(Object sourceObject, EventFilter... eventFilters) {
+        super(sourceObject);
         this.filters = new ArrayList<>();
 
         this.filters.addAll(Arrays.asList(eventFilters));
