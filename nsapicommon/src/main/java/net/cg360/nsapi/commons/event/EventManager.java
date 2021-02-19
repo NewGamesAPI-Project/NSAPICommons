@@ -20,6 +20,8 @@ public class EventManager {
     // This behaviour may be changed in the future to properly map NSAPI event priorities to
     // vanilla priorities.
 
+    private static EventManager primaryManager;
+
     protected ArrayList<EventFilter> filters; // Filter for EVERY listener.
     protected ArrayList<Listener> listeners;
     protected ArrayList<EventManager> children; // Send events to children too. Only sent if filter is passed.
@@ -31,6 +33,18 @@ public class EventManager {
 
         this.filters.addAll(Arrays.asList(filters));
     }
+
+
+    /**
+     * Sets the manager the result provided from KitRegistry#get() and
+     * finalizes the instance to an extent.
+     *
+     * Cannot be changed once initially called.
+     */
+    public void setAsPrimaryManager(){
+        if(primaryManager == null) primaryManager = this;
+    }
+
 
     public void call(Event event) {
         ArrayList<HandlerMethodPair> callList = new ArrayList<>();
@@ -128,6 +142,12 @@ public class EventManager {
         }
     }
 
+
+
+    /** @return the primary instance of the EventManager. */
+    public static EventManager get(){
+        return primaryManager;
+    }
 
     public EventFilter[] getFilters() { return filters.toArray(new EventFilter[0]); }
     public Listener[] getListeners() { return listeners.toArray(new Listener[0]); }
