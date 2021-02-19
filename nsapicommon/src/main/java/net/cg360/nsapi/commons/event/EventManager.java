@@ -1,6 +1,9 @@
 package net.cg360.nsapi.commons.event;
 
+import net.cg360.nsapi.commons.CommonLog;
 import net.cg360.nsapi.commons.event.filter.EventFilter;
+import net.cg360.nsapi.commons.event.handler.HandlerMethodPair;
+import net.cg360.nsapi.commons.event.type.Cancellable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +30,52 @@ public class EventManager {
         this.children = new ArrayList<>();
 
         this.filters.addAll(Arrays.asList(filters));
+    }
+
+    public void call(Event event) {
+        ArrayList<HandlerMethodPair> callList = new ArrayList<>();
+
+        // And this is the part where it's probably the least efficient.
+        // Would be great to bake this but then I can't really use the FilteredListener.
+        // Could maybe filter each method as I go?
+        for(Listener listener: listeners) {
+
+            for(HandlerMethodPair pair : listener.getEventMethods(event)) {
+                boolean added = false;
+                int pairPriority = pair.getAnnotation().getPriority().getValue();
+                int originalSize = callList.size();
+
+                for(int i = 0; i < originalSize; i++) {
+                    HandlerMethodPair p = callList.get(i);
+
+                    if(pairPriority > p.getAnnotation().getPriority().getValue()) {
+                        callList.add(i, pair);
+                        added = true;
+                        break;
+                    }
+                }
+
+                if(!added){
+                    callList.add(pair);
+                }
+            }
+        }
+
+        // Separating them to save a tiny bit more time on each iteration.
+        if(event instanceof Cancellable) {
+            Cancellable cancellable = (Cancellable) event;
+
+            for (HandlerMethodPair methodPair : callList) {
+                // Skip if cancelled and ignoring cancelled.
+                if(cancellable.isCancelled() && methodPair.getAnnotation().ignoreIfCancelled()) continue;
+                invokeEvent(event, methodPair);
+            }
+
+        } else {
+
+            for (HandlerMethodPair methodPair : callList) invokeEvent(event, methodPair);
+        }
+
     }
 
 
@@ -69,6 +118,15 @@ public class EventManager {
     }
 
 
+    private static void invokeEvent(Event event, HandlerMethodPair methodPair) {
+        try {
+            methodPair.getMethod().invoke(event);
+
+        } catch (Exception err) {
+            CommonLog.get().error("EventSystem", "An error was thrown during the invocation of an event.");
+            err.printStackTrace();
+        }
+    }
 
 
     public EventFilter[] getFilters() { return filters.toArray(new EventFilter[0]); }
