@@ -49,17 +49,28 @@ public final class Settings {
 
 
     /** Sets a key within the settings if they are unlocked. */
-    public <T> Settings set(Key<T> key, Value<T> value) {
-        if(!isLocked) dataMap.put(key, value);
+    public <T> Settings set(Key<T> key, T value) {
+        if(!isLocked) dataMap.put(key, new Value<>(value));
         return this;
     }
 
 
-    /** Returns a property with the same type as the key. */
+    /**
+     * Returns a property with the same type as the key. If not
+     * present, the object from the 2nd parameter is returned.
+     */
     @SuppressWarnings("unchecked")
-    public <T> Value<T> get(Key<T> id) {
+    public <T> T getOrElse(Key<T> id, T orElse) {
         Value<?> v = dataMap.get(id);
-        return v == null ? null : (Value<T>) v;
+        return v == null ? orElse : ((Value<T>) v).get();
+    }
+
+    /**
+     * Returns a property with the same type as the key. If not
+     * present, null is returned.
+     */
+    public <T> T get(Key<T> id) {
+        return getOrElse(id, null);
     }
 
     /** @return a copy of these settings which is unlocked. */
