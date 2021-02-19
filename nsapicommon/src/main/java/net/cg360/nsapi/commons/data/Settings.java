@@ -36,13 +36,24 @@ public final class Settings {
     }
 
 
-    public void lock() {
+
+    /** Prevents setting data within this Settings object. */
+    public Settings lock() {
+        // Duplicate maps + make them unmodifiable if unlocked still.
         if(!this.isLocked) {
-            // Duplicate maps + make them unmodifiable.
             this.dataMap = Immutable.uMap(this.dataMap, true);
             this.isLocked = true;
         }
+        return this;
     }
+
+
+    /** Sets a key within the settings if they are unlocked. */
+    public <T> Settings set(Key<T> key, Value<T> value) {
+        if(!isLocked) dataMap.put(key, value);
+        return this;
+    }
+
 
     /** Returns a property with the same type as the key. */
     @SuppressWarnings("unchecked")
@@ -50,17 +61,6 @@ public final class Settings {
         Value<?> v = dataMap.get(id);
         return v == null ? null : (Value<T>) v;
     }
-
-    /** Sets a key within the settings if they are unlocked. */
-    public <T> boolean set(Key<T> key, Value<T> value) {
-
-        if(!isLocked) {
-            dataMap.put(key, value);
-            return true;
-        }
-        return false;
-    }
-
 
     /** @return a copy of these settings which is unlocked. */
     public Settings getUnlockedCopy() {
