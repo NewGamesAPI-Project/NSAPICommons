@@ -2,6 +2,7 @@ name: NSAPICommons
 main: net.cg360.nsapi.commons.SpigotCommons
 load: STARTUP
 version: "1.0.0"
+api-version: 1.16
 prefix: "nsapicommons"
 
 authors: [ "CG360", "NSAPI @ Github" ]
