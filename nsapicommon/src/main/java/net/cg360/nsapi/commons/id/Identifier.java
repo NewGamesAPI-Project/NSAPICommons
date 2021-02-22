@@ -62,6 +62,12 @@ public class Identifier {
     public String getID() { return namespace+":"+id; }
 
 
+    /** @return the result of Identifier#getID() */
+    @Override
+    public String toString() {
+        return getID();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

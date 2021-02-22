@@ -58,6 +58,11 @@ public class Namespace {
     }
 
 
+    /** @return the result of Namespace#getNamespaceString() */
+    @Override
+    public String toString() {
+        return getNamespaceString();
+    }
 
     @Override
     public boolean equals(Object o) {
