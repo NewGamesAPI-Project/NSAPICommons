@@ -1,10 +1,18 @@
 package net.cg360.nsapi.commons.data.keyvalue;
 
+import net.cg360.nsapi.commons.Check;
+import net.cg360.nsapi.commons.id.Identifier;
+
 import java.util.Objects;
 
 public final class Key<T> {
 
     private String key;
+
+    public Key(Identifier key) {
+        Check.nullParam(key, "Key Identifier");
+        this.key = key.getID();
+    }
 
     public Key(String key) {
         if(key == null) throw new IllegalArgumentException("Key cannot be null");
