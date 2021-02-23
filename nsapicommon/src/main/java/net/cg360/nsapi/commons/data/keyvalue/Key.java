@@ -15,7 +15,7 @@ public final class Key<T> {
     }
 
     public Key(String key) {
-        if(key == null) throw new IllegalArgumentException("Key cannot be null");
+        Check.nullParam(key, "Key String");
         String modifiedKey = key.trim().toLowerCase();
 
         if(modifiedKey.length() == 0) throw new IllegalArgumentException("Key cannot be made of only whitespace.");
