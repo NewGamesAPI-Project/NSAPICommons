@@ -7,11 +7,11 @@ import java.util.List;
 public final class Check {
 
     public static void missingProperty(Object obj, String loc, String name) {
-        if(isNonNull(obj)) throw new MissingPropertyException(String.format("%s is missing a valid '%s' property.", loc, name));
+        if(isNull(obj)) throw new MissingPropertyException(String.format("%s is missing a valid '%s' property.", loc, name));
     }
 
     public static void nullParam(Object obj, String name) {
-        if(isNonNull(obj)) throw new IllegalArgumentException(String.format("'%s' cannot be null.", name));
+        if(isNull(obj)) throw new IllegalArgumentException(String.format("'%s' cannot be null.", name));
     }
 
     /**
@@ -26,8 +26,8 @@ public final class Check {
         if((val > upperBound)) throw new IllegalStateException(String.format("'%s' is out of bounds (val = %s | Upper = %s)", name, val, upperBound));
     }
 
-    public static boolean isNonNull(Object obj) {
-        return obj != null;
+    public static boolean isNull(Object obj) {
+        return obj == null;
     }
 
 }
