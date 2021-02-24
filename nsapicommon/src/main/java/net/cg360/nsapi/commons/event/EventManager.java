@@ -36,7 +36,7 @@ public class EventManager {
 
 
     /**
-     * Sets the manager the result provided from KitRegistry#get() and
+     * Sets the manager the result provided from EventManager#get() and
      * finalizes the instance to an extent.
      *
      * Cannot be changed once initially called.
