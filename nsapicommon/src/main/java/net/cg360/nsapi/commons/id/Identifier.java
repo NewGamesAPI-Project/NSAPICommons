@@ -1,5 +1,6 @@
 package net.cg360.nsapi.commons.id;
 
+import net.cg360.nsapi.commons.Check;
 import net.cg360.nsapi.commons.Utility;
 
 import java.util.Objects;
@@ -10,9 +11,7 @@ public class Identifier {
     protected String namespace;
     protected String id;
 
-    public Identifier (String namespace, String id) {
-        this(new Namespace(namespace), id);
-    }
+    public Identifier (String namespace, String id) { this(new Namespace(namespace), id); }
     public Identifier (Namespace namespace, String id) {
         // Namespace IDs are checked thus can be trusted.
         this.namespace = namespace.getNamespaceString();
@@ -32,13 +31,30 @@ public class Identifier {
             }
         }
     }
+    public Identifier (String identifier) {
+        Check.nullParam(identifier, "identifier");
+
+        if(identifier.contains(":")) {
+            String[] components = identifier.split(Pattern.quote(":"));
+
+            this.namespace = new Namespace(components[0]).getNamespaceString(); // Use namespace class to check.
+
+            if(nullCheck(components[1])){
+                this.id = components[1].trim().toLowerCase();
+            }
+
+        } else {
+            // Not spaces, no colons, all checks passed.
+            this.id = "unknown:"+identifier.trim().toLowerCase();
+        }
+    }
 
 
 
     /**
-     * Little constructor utility method for checking if the identifier is
+     * Little constructor utility method for checking if the id component is
      * valid, else replacing it with a random string of characters.
-     * @param i the identifier in
+     * @param i the id in
      * @return has the identifier been left the same?
      */
     protected boolean nullCheck(String i) {
