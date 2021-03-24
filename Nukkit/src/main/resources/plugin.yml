@@ -1,0 +1,9 @@
+name: NSAPICommons
+main: net.cg360.nsapi.commons.NukkitCommons
+load: STARTUP
+version: "1.0.0"
+api: ["1.0.9"]
+prefix: "nsapicommons"
+
+authors: [ "CG360", "NSAPI @ Github" ]
+description: "This plugin provides common utilities throughout all NSAPI projects."

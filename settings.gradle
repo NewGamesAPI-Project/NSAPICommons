@@ -1,5 +1,5 @@
 rootProject.name = 'NSAPICommons'
-include('nsapicommon', 'spigot')
+include('nsapicommon', 'spigot', 'Nukkit')
 
 // Add new platforms here. They should have their own build.gradle which includes nsapicommon as a compile dependency.
 

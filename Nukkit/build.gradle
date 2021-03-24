@@ -1,0 +1,27 @@
+group 'net.cg360.nsapi'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+sourceCompatibility = targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://repo.nukkitx.com/maven-snapshots'
+    }
+}
+
+dependencies {
+    compile project(':nsapicommon')
+    implementation 'cn.nukkit:nukkit:1.0-SNAPSHOT'
+
+    compile fileTree(dir: 'libs/compile', include: '*.jar')
+    implementation fileTree(dir: 'libs/runtime', include: '*.jar')
+}
+
+afterEvaluate {
+    jar {
+        jar.archiveName('NSAPICommons-Nukkit-' + archiveVersion.get() + '.jar')
+    }
+}
