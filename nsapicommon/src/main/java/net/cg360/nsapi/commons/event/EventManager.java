@@ -5,6 +5,9 @@ import net.cg360.nsapi.commons.event.filter.EventFilter;
 import net.cg360.nsapi.commons.event.handler.HandlerMethodPair;
 import net.cg360.nsapi.commons.event.type.Cancellable;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -45,7 +48,6 @@ public class EventManager {
         if(primaryManager == null) primaryManager = this;
     }
 
-
     public void call(Event event) {
         ArrayList<HandlerMethodPair> callList = new ArrayList<>();
 
@@ -55,6 +57,29 @@ public class EventManager {
         for(Listener listener: listeners) {
 
             for(HandlerMethodPair pair : listener.getEventMethods(event)) {
+
+                // Handles generics in class parameters.
+                // These would be a nightmare to integrate into the listener's map.
+                TypeVariable<? extends Class<?>>[] source = event.getClass().getTypeParameters();
+                TypeVariable<? extends Class<?>>[] target = pair.getMethod().getParameterTypes()[0].getTypeParameters();
+                if(!(source.length == target.length)) continue; // Not even the right length!
+
+                boolean fail = false;
+                for(int i = 0; i < source.length; i++) {
+                    TypeVariable<? extends Class<?>> sourceType = source[i];
+                    TypeVariable<? extends Class<?>> targetType = target[i];
+
+                    if(!sourceType.getGenericDeclaration().isAssignableFrom(targetType.getGenericDeclaration())){
+                        fail = true;
+                        break;
+                    }
+                }
+
+                if(fail) continue;
+
+                // ^ should just be skipped if generics aren't found ^
+
+
                 boolean added = false;
                 int pairPriority = pair.getAnnotation().getPriority().getValue();
                 int originalSize = callList.size();
