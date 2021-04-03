@@ -26,4 +26,8 @@ public class FilteredListener extends Listener {
         // Pass to filters. They can edit the map.
         return methods;
     }
+
+    public List<EventFilter> getFilters() {
+        return new ArrayList<>(filters);
+    }
 }
