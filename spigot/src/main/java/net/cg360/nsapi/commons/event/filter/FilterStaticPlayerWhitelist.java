@@ -1,6 +1,7 @@
 package net.cg360.nsapi.commons.event.filter;
 
 import net.cg360.nsapi.commons.event.Event;
+import net.cg360.nsapi.commons.event.VanillaEvent;
 import net.cg360.nsapi.commons.event.type.EntityEvent;
 import net.cg360.nsapi.commons.event.type.PlayerEvent;
 import org.bukkit.entity.Entity;
@@ -59,6 +60,41 @@ public class FilterStaticPlayerWhitelist implements EventFilter {
             }
         }
 
+        // Basically the same stuff but from the VanillaEvent wrapper
+        if(eventIn instanceof VanillaEvent<?>) {
+            org.bukkit.event.Event wrapped = ((VanillaEvent<?>) eventIn).getWrappedEvent();
+
+            if(wrapped instanceof org.bukkit.event.player.PlayerEvent) {
+                pass = false; // A check has been done, make false unless found.
+                Player check = ((org.bukkit.event.player.PlayerEvent) wrapped).getPlayer();
+
+                for(Player p: playerWhitelist) {
+
+                    if(p == check) {
+                        return true; // Passed thus it's guaranteed true
+                    }
+                }
+            }
+
+            if((!onlyPlayerEvents) && (wrapped instanceof org.bukkit.event.entity.EntityEvent)) {
+                pass = false; // A check has been done, make false unless found.
+                Entity check = ((org.bukkit.event.entity.EntityEvent) wrapped).getEntity();
+
+                if(check instanceof Player) {
+
+                    for (Player p : playerWhitelist) {
+
+                        if (p == check) {
+                            pass = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+
+        }
         return pass;
     }
 }

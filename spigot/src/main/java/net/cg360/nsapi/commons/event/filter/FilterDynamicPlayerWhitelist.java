@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public class FilterDynamicPlayerWhitelist implements EventFilter {
 
     protected Supplier<Player[]> supplier;
-    protected boolean onlyPlayerEvents;
+    protected boolean onlyPlayerEvents; // Ignore entity events in the check
 
 
     public FilterDynamicPlayerWhitelist(Supplier<Player[]> supplier) { this(supplier, false); }
