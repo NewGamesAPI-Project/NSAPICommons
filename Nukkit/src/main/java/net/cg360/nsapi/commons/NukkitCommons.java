@@ -5,6 +5,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.scheduler.Task;
 import net.cg360.nsapi.commons.event.NSEventManager;
 import net.cg360.nsapi.commons.event.VanillaEvent;
 import net.cg360.nsapi.commons.scheduler.NSSyncScheduler;
@@ -39,6 +40,19 @@ public class NukkitCommons extends PluginBase implements Listener, ServerSchedul
             );
             this.api.setAsPrimaryAPI();
             this.getServer().getPluginManager().registerEvents(this, this);
+            this.getServer().getScheduler().scheduleDelayedRepeatingTask(new Task() {
+
+                @Override
+                public void onRun(int currentTick) {
+                    if(isCommonsPluginLoaded()) {
+                        for (NSSyncScheduler s : new ArrayList<>(getHookedSchedulers())) s.serverTick();
+
+                    } else {
+                        this.cancel();
+                    }
+                }
+
+            }, 1, 1);
 
         } catch (Exception err){
             commons = null;
@@ -49,7 +63,16 @@ public class NukkitCommons extends PluginBase implements Listener, ServerSchedul
         }
     }
 
+    @Override
+    public void onDisable() {
+        this.api = null;
+        HandlerList.unregisterAll((Listener) this);
 
+        // Unregister all schedulers.
+        for(NSSyncScheduler s: new ArrayList<>(getHookedSchedulers())) {
+            registerSchedulerHook(s);
+        }
+    }
 
     @Override
     public void registerSchedulerHook(NSSyncScheduler scheduler) {

@@ -9,7 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ public class SpigotCommons extends JavaPlugin implements Listener, ServerSchedul
     public static SpigotCommons commons;
 
     protected CommonsAPI api;
+    protected ArrayList<NSSyncScheduler> hookedSchedulers;
 
     @Override
     public void onEnable() {
@@ -35,6 +38,16 @@ public class SpigotCommons extends JavaPlugin implements Listener, ServerSchedul
             );
             this.api.setAsPrimaryAPI();
             this.getServer().getPluginManager().registerEvents(this, this);
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    if(isCommonsPluginLoaded()) {
+                        for (NSSyncScheduler s : new ArrayList<>(getHookedSchedulers())) s.serverTick();
+                    } else { this.cancel(); }
+                }
+
+            }.runTaskTimer(this, 1, 1);
 
         } catch (Exception err){
             commons = null;
@@ -45,21 +58,32 @@ public class SpigotCommons extends JavaPlugin implements Listener, ServerSchedul
         }
     }
 
+    @Override
+    public void onDisable() {
+        this.api = null;
+        HandlerList.unregisterAll((Listener) this);
+
+        // Unregister all schedulers.
+        for(NSSyncScheduler s: new ArrayList<>(getHookedSchedulers())) {
+            registerSchedulerHook(s);
+        }
+    }
+
 
 
     @Override
     public void registerSchedulerHook(NSSyncScheduler scheduler) {
-
+        if(!hookedSchedulers.contains(scheduler)) hookedSchedulers.add(scheduler);
     }
 
     @Override
     public void removeSchedulerHook(NSSyncScheduler scheduler) {
-
+        hookedSchedulers.remove(scheduler);
     }
 
     @Override
     public List<NSSyncScheduler> getHookedSchedulers() {
-        return null;
+        return new ArrayList<>(hookedSchedulers);
     }
 
 
