@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons;
 
-import net.cg360.nsapi.commons.event.EventManager;
+import net.cg360.nsapi.commons.event.NSEventManager;
 import net.cg360.nsapi.commons.event.VanillaEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -15,7 +15,7 @@ public class SpigotCommons extends JavaPlugin implements Listener {
 
     public static SpigotCommons commons;
 
-    protected EventManager eventManager;
+    protected NSEventManager eventManager;
 
 
 
@@ -25,7 +25,7 @@ public class SpigotCommons extends JavaPlugin implements Listener {
             commons = this;
 
             new SpigotLoggerInterface().setAsMain();
-            this.eventManager = new EventManager();
+            this.eventManager = new NSEventManager();
             this.eventManager.setAsPrimaryManager();
 
             this.getServer().getPluginManager().registerEvents(this, this);
@@ -52,5 +52,5 @@ public class SpigotCommons extends JavaPlugin implements Listener {
     public static boolean isCommonsPluginLoaded() { return commons != null; }
 
     /** @return the primary event manager. */
-    public static EventManager getEventManager() { return get().eventManager; }
+    public static NSEventManager getEventManager() { return get().eventManager; }
 }

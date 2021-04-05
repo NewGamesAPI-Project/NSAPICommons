@@ -1,7 +1,6 @@
 package net.cg360.nsapi.commons.event.filter;
 
-import net.cg360.nsapi.commons.event.Event;
-import net.cg360.nsapi.commons.event.type.PlayerEvent;
+import net.cg360.nsapi.commons.event.BaseEvent;
 import org.bukkit.entity.Player;
 
 import java.util.function.Supplier;
@@ -21,7 +20,7 @@ public class FilterDynamicPlayerWhitelist implements EventFilter {
 
 
     @Override
-    public boolean checkEvent(Event eventIn) {
+    public boolean checkEvent(BaseEvent eventIn) {
         return new FilterStaticPlayerWhitelist(supplier.get()).checkEvent(eventIn);
     }
 }

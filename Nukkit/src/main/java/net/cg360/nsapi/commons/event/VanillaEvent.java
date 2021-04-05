@@ -2,7 +2,7 @@ package net.cg360.nsapi.commons.event;
 
 import net.cg360.nsapi.commons.Check;
 
-public final class VanillaEvent<E extends cn.nukkit.event.Event> extends Event {
+public final class VanillaEvent<E extends cn.nukkit.event.Event> extends BaseEvent {
 
     private final E wrappedEvent;
 

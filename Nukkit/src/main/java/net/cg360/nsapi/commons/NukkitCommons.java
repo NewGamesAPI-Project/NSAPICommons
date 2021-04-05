@@ -4,7 +4,7 @@ import cn.nukkit.event.Event;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.PluginBase;
-import net.cg360.nsapi.commons.event.EventManager;
+import net.cg360.nsapi.commons.event.NSEventManager;
 import net.cg360.nsapi.commons.event.VanillaEvent;
 
 /**
@@ -15,7 +15,7 @@ public class NukkitCommons extends PluginBase implements Listener {
 
     public static NukkitCommons commons;
 
-    protected EventManager eventManager;
+    protected NSEventManager eventManager;
 
 
 
@@ -25,7 +25,7 @@ public class NukkitCommons extends PluginBase implements Listener {
             commons = this;
 
             new NukkitLoggerInterface().setAsMain();
-            this.eventManager = new EventManager();
+            this.eventManager = new NSEventManager();
             this.eventManager.setAsPrimaryManager();
 
             this.getServer().getPluginManager().registerEvents(this, this);
@@ -51,5 +51,5 @@ public class NukkitCommons extends PluginBase implements Listener {
     public static boolean isCommonsPluginLoaded() { return commons != null; }
 
     /** @return the primary event manager. */
-    public static EventManager getEventManager() { return get().eventManager; }
+    public static NSEventManager getEventManager() { return get().eventManager; }
 }

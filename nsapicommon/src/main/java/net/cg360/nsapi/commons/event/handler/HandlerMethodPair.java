@@ -4,15 +4,15 @@ import java.lang.reflect.Method;
 
 public final class HandlerMethodPair {
 
-    private EventHandler annotation;
+    private NSEventHandler annotation;
     private Method method;
 
-    public HandlerMethodPair(EventHandler annotation, Method method) {
+    public HandlerMethodPair(NSEventHandler annotation, Method method) {
         this.annotation = annotation;
         this.method = method;
     }
 
-    public EventHandler getAnnotation() { return annotation; }
+    public NSEventHandler getAnnotation() { return annotation; }
     public Method getMethod() { return method; }
 
 }

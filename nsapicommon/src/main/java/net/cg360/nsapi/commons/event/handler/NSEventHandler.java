@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.METHOD)
-public @interface EventHandler {
+public @interface NSEventHandler {
 
     Priority getPriority() default Priority.NORMAL;
     boolean ignoreIfCancelled() default true;

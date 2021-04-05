@@ -2,18 +2,16 @@ package net.cg360.nsapi.commons.event;
 
 import net.cg360.nsapi.commons.event.filter.EventFilter;
 import net.cg360.nsapi.commons.event.handler.HandlerMethodPair;
-import net.cg360.nsapi.commons.event.handler.Priority;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
-public class FilteredListener extends Listener {
+public class NSFilteredListener extends NSListener {
 
     private List<EventFilter> filters;
 
-    public FilteredListener(Object sourceObject, EventFilter... eventFilters) {
+    public NSFilteredListener(Object sourceObject, EventFilter... eventFilters) {
         super(sourceObject);
         this.filters = new ArrayList<>();
 
@@ -21,7 +19,7 @@ public class FilteredListener extends Listener {
     }
 
     @Override
-    public ArrayList<HandlerMethodPair> getEventMethods(Event event) {
+    public ArrayList<HandlerMethodPair> getEventMethods(BaseEvent event) {
         ArrayList<HandlerMethodPair> methods = super.getEventMethods(event);
         // Pass to filters. They can edit the map.
         return methods;

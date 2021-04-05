@@ -1,9 +1,9 @@
 package net.cg360.nsapi.commons.event.filter;
 
-import net.cg360.nsapi.commons.event.Event;
+import net.cg360.nsapi.commons.event.BaseEvent;
 
 public interface EventFilter {
 
-    boolean checkEvent(Event eventIn);
+    boolean checkEvent(BaseEvent eventIn);
 
 }

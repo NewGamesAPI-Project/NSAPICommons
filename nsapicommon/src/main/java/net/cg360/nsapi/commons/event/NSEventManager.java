@@ -5,13 +5,11 @@ import net.cg360.nsapi.commons.event.filter.EventFilter;
 import net.cg360.nsapi.commons.event.handler.HandlerMethodPair;
 import net.cg360.nsapi.commons.event.type.Cancellable;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class EventManager {
+public class NSEventManager {
 
     //TODO
     // All events should be handled like this note:
@@ -23,13 +21,13 @@ public class EventManager {
     // This behaviour may be changed in the future to properly map NSAPI event priorities to
     // vanilla priorities.
 
-    private static EventManager primaryManager;
+    private static NSEventManager primaryManager;
 
     protected ArrayList<EventFilter> filters; // Filter for EVERY listener.
-    protected ArrayList<Listener> listeners;
-    protected ArrayList<EventManager> children; // Send events to children too. Only sent if filter is passed.
+    protected ArrayList<NSListener> listeners;
+    protected ArrayList<NSEventManager> children; // Send events to children too. Only sent if filter is passed.
 
-    public EventManager(EventFilter... filters) {
+    public NSEventManager(EventFilter... filters) {
         this.filters = new ArrayList<>();
         this.listeners = new ArrayList<>();
         this.children = new ArrayList<>();
@@ -48,13 +46,13 @@ public class EventManager {
         if(primaryManager == null) primaryManager = this;
     }
 
-    public void call(Event event) {
+    public void call(BaseEvent event) {
         ArrayList<HandlerMethodPair> callList = new ArrayList<>();
 
         // And this is the part where it's probably the least efficient.
         // Would be great to bake this but then I can't really use the FilteredListener.
         // Could maybe filter each method as I go?
-        for(Listener listener: listeners) {
+        for(NSListener listener: listeners) {
 
             for(HandlerMethodPair pair : listener.getEventMethods(event)) {
 
@@ -123,7 +121,7 @@ public class EventManager {
      * @param listener the listener to be registered.
      * @return listener for storing an instance.
      */
-    public Listener addListener(Listener listener) {
+    public NSListener addListener(NSListener listener) {
         removeListener(listener, true);
         // Check that it isn't duped by clearing it.
         // If someone has used the same object instance to create two objects and overrided
@@ -136,7 +134,7 @@ public class EventManager {
      * Removes listener from this EventManager and any child EventManager's
      * @param listener the listener to be removed.
      */
-    public void removeListener(Listener listener) {
+    public void removeListener(NSListener listener) {
         removeListener(listener, true);
     }
 
@@ -145,19 +143,19 @@ public class EventManager {
      * @param listener the listener to be removed.
      * @param removeFromChildren should instances of this listener be removed in child EventManager's ?
      */
-    public void removeListener(Listener listener, boolean removeFromChildren) {
+    public void removeListener(NSListener listener, boolean removeFromChildren) {
         listeners.remove(listener);
 
         if(removeFromChildren) {
 
-            for (EventManager child : children) {
+            for (NSEventManager child : children) {
                 child.removeListener(listener, true); // Ensure children don't include it either.
             }
         }
     }
 
 
-    private static void invokeEvent(Event event, HandlerMethodPair methodPair) {
+    private static void invokeEvent(BaseEvent event, HandlerMethodPair methodPair) {
         try {
             methodPair.getMethod().invoke(event);
 
@@ -170,11 +168,11 @@ public class EventManager {
 
 
     /** @return the primary instance of the EventManager. */
-    public static EventManager get(){
+    public static NSEventManager get(){
         return primaryManager;
     }
 
     public EventFilter[] getFilters() { return filters.toArray(new EventFilter[0]); }
-    public Listener[] getListeners() { return listeners.toArray(new Listener[0]); }
-    public EventManager[] getChildren() { return children.toArray(new EventManager[0]); }
+    public NSListener[] getListeners() { return listeners.toArray(new NSListener[0]); }
+    public NSEventManager[] getChildren() { return children.toArray(new NSEventManager[0]); }
 }

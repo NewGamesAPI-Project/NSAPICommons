@@ -5,7 +5,7 @@ import cn.nukkit.entity.Entity;
 import net.cg360.nsapi.commons.event.VanillaEvent;
 import net.cg360.nsapi.commons.event.type.EntityEvent;
 import net.cg360.nsapi.commons.event.type.PlayerEvent;
-import net.cg360.nsapi.commons.event.Event;
+import net.cg360.nsapi.commons.event.BaseEvent;
 
 /**
  * Taking in a whitelist, the filter checks if the event passed in
@@ -27,7 +27,7 @@ public class FilterStaticPlayerWhitelist implements EventFilter {
 
 
     @Override
-    public boolean checkEvent(Event eventIn) {
+    public boolean checkEvent(BaseEvent eventIn) {
         boolean pass = true;
         // Should be true if event is not the right type.
         // Should be false if it's the right type but failed all checks.

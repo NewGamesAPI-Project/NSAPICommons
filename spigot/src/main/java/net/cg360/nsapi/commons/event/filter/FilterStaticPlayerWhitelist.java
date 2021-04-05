@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons.event.filter;
 
-import net.cg360.nsapi.commons.event.Event;
+import net.cg360.nsapi.commons.event.BaseEvent;
 import net.cg360.nsapi.commons.event.VanillaEvent;
 import net.cg360.nsapi.commons.event.type.EntityEvent;
 import net.cg360.nsapi.commons.event.type.PlayerEvent;
@@ -27,7 +27,7 @@ public class FilterStaticPlayerWhitelist implements EventFilter {
 
 
     @Override
-    public boolean checkEvent(Event eventIn) {
+    public boolean checkEvent(BaseEvent eventIn) {
         boolean pass = true;
         // Should be true if event is not the right type.
         // Should be false if it's the right type but failed all checks.
