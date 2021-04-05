@@ -1,5 +1,7 @@
 package net.cg360.nsapi.commons;
 
+import net.cg360.nsapi.commons.io.CommonLog;
+
 public class SpigotLoggerInterface extends CommonLog {
 
     @Override public void debug(String source, String message) { SpigotCommons.get().getLogger().fine(String.format("[%s]: %s", source, message)); }

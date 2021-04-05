@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons.event;
 
-import net.cg360.nsapi.commons.CommonLog;
+import net.cg360.nsapi.commons.io.CommonLog;
 import net.cg360.nsapi.commons.event.filter.EventFilter;
 import net.cg360.nsapi.commons.event.handler.HandlerMethodPair;
 import net.cg360.nsapi.commons.event.type.Cancellable;

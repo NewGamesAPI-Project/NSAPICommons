@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons;
 
-import net.cg360.nsapi.commons.CommonLog;
+import net.cg360.nsapi.commons.io.CommonLog;
 
 public class NukkitLoggerInterface extends CommonLog {
 

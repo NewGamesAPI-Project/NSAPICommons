@@ -1,4 +1,4 @@
-package net.cg360.nsapi.commons.id;
+package net.cg360.nsapi.commons.data.id;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
