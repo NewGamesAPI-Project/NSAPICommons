@@ -69,7 +69,10 @@ public class NSSyncScheduler {
 
     /** Cleares all the tasks queued in the scheduler. */
     public void clearSchedulerTasks() {
-        // Cancel tasks and clear list.
+       for(NSTaskEntry entry: new ArrayList<>(schedulerTasks)) {
+           entry.getTask().cancel(); // For the runnable to use? idk
+           this.schedulerTasks.remove(entry);
+       }
     }
 
 
@@ -94,22 +97,25 @@ public class NSSyncScheduler {
     public void schedulerTick() {
         if(isRunning) {
 
-
             // To avoid stopping the scheduler from inside a task making it scream, use ArrayList wrapping
             for(NSTaskEntry task: new ArrayList<>(schedulerTasks)) {
-
-
                 long taskTick = task.getNextTick();
+
                 if(taskTick == schedulerTick) {
-                    task.getTask().run();
 
-                    // Not cancelled + it's a repeat task.
-                    if(task.isRepeating() && (!task.getTask().isCancelled())) {
-                        long targetTick = taskTick + task.getRepeatInterval();
+                    // Cancelled tasks shouldn't be in the scheduler queue anyway.
+                    if(!task.getTask().isCancelled()) {
+                        task.getTask().run();
 
-                        NSTaskEntry newTask = new NSTaskEntry(task.getTask(), task.getRepeatInterval(), targetTick);
-                        queueNSTaskEntry(newTask);
+                        // Not cancelled by the call of #run() + it's a repeat task.
+                        if(task.isRepeating() && (!task.getTask().isCancelled())) {
+                            long targetTick = taskTick + task.getRepeatInterval();
+
+                            NSTaskEntry newTask = new NSTaskEntry(task.getTask(), task.getRepeatInterval(), targetTick);
+                            queueNSTaskEntry(newTask);
+                        }
                     }
+
                 } else if(taskTick > schedulerTick) {
                     // Upcoming task, do not remove from queue! :)
                     break;
