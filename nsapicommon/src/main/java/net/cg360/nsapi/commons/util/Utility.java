@@ -1,7 +1,6 @@
-package net.cg360.nsapi.commons;
+package net.cg360.nsapi.commons.util;
 
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
  * A few utility methods.

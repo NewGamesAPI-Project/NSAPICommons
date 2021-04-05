@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons.data.keyvalue;
 
-import net.cg360.nsapi.commons.Check;
+import net.cg360.nsapi.commons.util.Check;
 import net.cg360.nsapi.commons.id.Identifier;
 
 import java.util.Objects;

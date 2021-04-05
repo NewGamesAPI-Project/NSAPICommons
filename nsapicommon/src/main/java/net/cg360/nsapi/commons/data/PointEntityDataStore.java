@@ -3,8 +3,8 @@ package net.cg360.nsapi.commons.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import net.cg360.nsapi.commons.Immutable;
-import net.cg360.nsapi.commons.Utility;
+import net.cg360.nsapi.commons.util.Immutable;
+import net.cg360.nsapi.commons.util.Utility;
 import net.cg360.nsapi.commons.exception.MissingPropertyException;
 import net.cg360.nsapi.commons.math.PosRot;
 

@@ -1,4 +1,4 @@
-package net.cg360.nsapi.commons;
+package net.cg360.nsapi.commons.util;
 
 /**
  * Some constants that may be used across multiple projects.

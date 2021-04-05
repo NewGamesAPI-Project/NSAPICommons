@@ -1,7 +1,7 @@
 package net.cg360.nsapi.commons.id;
 
-import net.cg360.nsapi.commons.Check;
-import net.cg360.nsapi.commons.Utility;
+import net.cg360.nsapi.commons.util.Check;
+import net.cg360.nsapi.commons.util.Utility;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

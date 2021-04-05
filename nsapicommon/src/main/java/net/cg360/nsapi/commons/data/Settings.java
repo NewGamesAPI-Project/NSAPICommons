@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons.data;
 
-import net.cg360.nsapi.commons.Immutable;
+import net.cg360.nsapi.commons.util.Immutable;
 import net.cg360.nsapi.commons.data.keyvalue.Key;
 import net.cg360.nsapi.commons.data.keyvalue.Value;
 

@@ -1,4 +1,4 @@
-package net.cg360.nsapi.commons;
+package net.cg360.nsapi.commons.util;
 
 import net.cg360.nsapi.commons.exception.MissingPropertyException;
 

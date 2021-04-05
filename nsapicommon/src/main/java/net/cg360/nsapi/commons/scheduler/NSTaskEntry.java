@@ -1,6 +1,6 @@
 package net.cg360.nsapi.commons.scheduler;
 
-import net.cg360.nsapi.commons.Check;
+import net.cg360.nsapi.commons.util.Check;
 import net.cg360.nsapi.commons.scheduler.task.NSTask;
 
 public final class NSTaskEntry {
