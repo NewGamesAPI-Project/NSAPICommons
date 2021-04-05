@@ -6,7 +6,7 @@ import net.cg360.nsapi.commons.scheduler.NSSyncScheduler;
 import net.cg360.nsapi.commons.scheduler.ServerSchedulerBridge;
 import net.cg360.nsapi.commons.util.Check;
 
-public abstract class CommonsAPI {
+public final class CommonsAPI {
 
     protected static CommonsAPI apiInstance;
 
@@ -27,15 +27,18 @@ public abstract class CommonsAPI {
         this.schedulerBridge = schedulerBridge;
         this.mainScheduler = scheduler;
         this.mainEventManager = eventManager;
-
-        this.logger.setAsMain();
-        this.mainScheduler.setAsPrimaryInstance();
-        this.mainEventManager.setAsPrimaryManager();
     }
 
     /** Sets the primary instance of the api. */
     public void setAsPrimaryAPI() {
-        if(apiInstance == null) apiInstance = this;
+
+        if(apiInstance == null) {
+            apiInstance = this;
+
+            this.logger.setAsMain();
+            this.mainScheduler.setAsPrimaryInstance();
+            this.mainEventManager.setAsPrimaryManager();
+        }
     }
 
 
