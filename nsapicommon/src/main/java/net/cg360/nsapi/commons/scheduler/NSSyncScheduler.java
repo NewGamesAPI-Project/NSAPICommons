@@ -58,7 +58,7 @@ public class NSSyncScheduler {
     /** Removes scheduler's hook to the server tick whilst clearing the queue */
     public void pauseScheduler() {
         this.isRunning = false;
-        hook.removeSchedulerHook(this);
+        if(hook != null) hook.removeSchedulerHook(this);
     }
 
     /** Cleares all the tasks queued in the scheduler. */
