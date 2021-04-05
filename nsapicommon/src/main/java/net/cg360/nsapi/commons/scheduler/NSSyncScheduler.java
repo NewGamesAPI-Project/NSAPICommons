@@ -1,9 +1,6 @@
 package net.cg360.nsapi.commons.scheduler;
 
-import net.cg360.nsapi.commons.scheduler.task.NSTask;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -11,6 +8,9 @@ import java.util.UUID;
  * server implementation a plugin is targeted for.
  */
 public class NSSyncScheduler {
+
+    private static NSSyncScheduler primaryInstance;
+
 
     private UUID schedulerID;
 
@@ -23,6 +23,7 @@ public class NSSyncScheduler {
     protected ArrayList<NSTaskEntry> schedulerTasks;
     protected boolean isRunning;
 
+
     public NSSyncScheduler(ServerSchedulerBridge schedulerHook, int tickDelay) {
         this.schedulerID = UUID.randomUUID();
 
@@ -33,6 +34,16 @@ public class NSSyncScheduler {
         this.hook = schedulerHook;
         this.schedulerTasks = new ArrayList<>();
         this.isRunning = false;
+    }
+
+    /**
+     * Sets the scheduler the result provided from NSSyncScheduler#get() and
+     * finalizes the instance to an extent.
+     *
+     * Cannot be changed once initially called.
+     */
+    public void setAsPrimaryInstance() {
+        primaryInstance = this;
     }
 
 
@@ -163,7 +174,8 @@ public class NSSyncScheduler {
     /** @return the amount of server ticks between each scheduler tick. */
     public int getTickDelay() { return tickDelay; }
 
-
+    /** @return the primary instance of the scheduler. */
+    public static NSSyncScheduler get() { return primaryInstance; }
 
     // -- Setters --
 
